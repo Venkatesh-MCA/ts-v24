@@ -1,0 +1,64 @@
+.page-header,
+		.page-header-space {
+			height: 50px;
+			/* border-bottom: 1px #000 solid!important; */
+			box-sizing: border-box;
+			padding-top: 15px !important;
+		}
+
+		.page-header {
+			/*border-bottom: 1px #000 solid!important;  */
+		}
+
+		.page-footer,
+		.page-footer-space {
+			height: 50px;
+
+		}
+
+
+		.page-footer {
+			position: fixed;
+			bottom: 0;
+			border-top: 0px solid black;
+			width: 100vw;
+			display: flex;
+			justify-content: space-between;
+			box-sizing: border-box;
+			padding-top: 18px !important;
+
+		}
+
+
+		.page-header {
+			position: fixed;
+			top: 0mm;
+			width: 100%;
+		}
+
+
+
+.reHeader {
+    text-align: left;
+    font-size: 24px;
+    color: #fff;
+    font-weight: bold;
+    margin-bottom: 0;
+    background: #FF5722;
+    width: 200px;
+    height: 62px;
+    line-height: 62px;
+    text-indent: 12px;
+	position: relative;
+}
+.reHeader::after{
+   width: 0;
+    height: 0;
+    border-left: 23px solid #fc552f;
+    border-top: 32px solid transparent;
+    border-bottom: 30px solid transparent;
+    position: absolute;
+    content: '';
+    left: 200px;
+}
+@import url('https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css')

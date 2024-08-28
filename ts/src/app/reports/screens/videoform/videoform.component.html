@@ -1,0 +1,85 @@
+<main id="main" class="main">
+
+    <section class="section dashboard">
+
+        <div class="row">
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th class="text-center">QId /Subject / Topic</th>
+                        <th class="text-center">Url</th>
+                        <th class="text-center">Start</th>
+                        <th class="text-center">End</th>
+                        <th class="text-center">Status</th>
+                        <th class="text-center">Delete</th>
+
+                    </tr>
+                    <tr>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let x of resp; let i=index" class="ng-scope">
+
+                        <td class="ng-binding">{{i+1}}</td>
+                        <td class="ng-binding"><b class="ng-binding">{{x.question_master_id}} -</b> {{x.subject}}
+                            <br><small class="ng-binding">BINOMIAL THEOREM</small>
+                        </td>
+                        <td>
+
+                            <select class="form-control" [(ngModel)]="x.rawvideofilename"
+                                [attr.disabled]="x.status_code === '203'">
+                                <option *ngFor="let item of pathnames | filtefilter: '.mp4'; let c = index" value="{{item}}">
+                                    {{item}}</option>
+
+                            </select>
+                        </td>
+                        <td>
+
+
+                            <div class="input-group">
+                                <!-- <input id="appt-time" type="time" name="appt-time" step="2"   class="form-control"  [(ngModel)]="x.starttime_old"/> -->
+                                <input type="time"  id="appt-time" step="2"  class="form-control" [(ngModel)]="x.starttime_old"
+                                    placeholder="HH:MM:SS" (blur)="convert(i,x.starttime_old,'start')"
+                                    [readonly]="x.status_code === '203'">
+                                <div class=" input-group-append">
+                                    <span class="input-group-text font-weight-bold ng-binding">{{x.starttime}}</span>
+                                </div>
+                            </div>
+
+
+                        </td>
+                        <td>
+
+                            <div class="input-group">
+                                <input type="time"  id="appt-time" step="2"  class="form-control" [(ngModel)]="x.endtime_old"
+                                    (blur)="convert(i,x.endtime_old,'end')" [readonly]="x.status_code === '203'">
+                                <div class="input-group-append">
+                                    <span class="input-group-text font-weight-bold ng-binding">{{x.endtime}}</span>
+                                </div>
+                            </div>
+
+                        </td>
+
+                        <td class="text-center">
+                            <a href="{{x.outputfiename}}" target="_blank"><i class="bi bi-play-btn-fill"
+                                    *ngIf="x.status_code=='203'"></i></a>
+                            <div class="spinner-border text-primary" role="status" *ngIf="x.processstatus=='Inprocess'">
+                            </div>
+                        </td>
+
+                        <td class="text-center">
+                            <i class="bi bi-trash text-danger"></i>
+                        </td>
+                        </tr>
+                        <tr>
+                            <td><input type="button" name="submit" value="submit" class="form-control warning" (click)="submitdata()" ></td>
+                        </tr>
+
+
+
+                </tbody>
+            </table>
+        </div>
+    </section>
+</main>

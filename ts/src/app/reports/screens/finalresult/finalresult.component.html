@@ -1,0 +1,188 @@
+<main id="main" class="main">
+
+  <div class="card card-body" style="margin-top:-10px;font-size: 10px">
+    <div id="example4" role="execelBlock">
+      <div class="d-flex align-items-center gap-3 justify-content-between py-3">
+        <div class="hstack justify-content-start">
+          <img src="assets/img/live1.png" style="width: 40px;">&nbsp;
+          <h5 class="card-title d-flex flex-column">
+            Final Result<div class="text-muted small" style="font-weight:400;margin-top:2px;">{{selectpapercode}}</div>
+          </h5>
+          
+          <!-- <span style="font-size:14px;">Paper Code:&nbsp;</span> -->
+        </div>
+        <div class="hstack gap-3">
+          <input type="text" class="form-control form-select" placeholder="Search..." minlength="2"
+            aria-describedby="basic-addon2" name="searchText" [(ngModel)]="searchText" required style=""
+            style="height:38px;padding: 8px;width: 270px;border: 1px #ced4e2 solid;border-radius: 4px;z-index: 50">
+          <select id="inputbranch" class="form-select" [(ngModel)]="filtertext" (change)="searchdatafilter(filtertext)"
+            style="width:150px;">
+            <option value="" [selected]="filtertext==''">ALL</option>
+            <option *ngFor="let b of unicbranch">{{b}}</option>
+            <!-- <option *ngFor="let b of unicbranch" [ngValue]="b" [selected]="b===filtertext">
+                {{b}}</option> -->
+          </select>
+          <div class="btn btn-primary py-0 px-1 rounded-1"><i class="ri-file-excel-2-line fs-5"
+              (click)="exportexcel(selectpapercode)"></i>
+          </div>          
+        </div>
+      </div>
+      <div *ngIf="convertedData.length==0 && studenrresult!=''" class="noData"> No Result Found </div>
+      <div class="table-responsive;" style="overflow-x: auto" *ngIf="convertedData.length!=0">
+        <table width="100%" cellspacing="0" cellpadding="2" border="1"
+          style="border-color: #ccc;border-collapse: collapse;text-align: center;" id="excel-table">
+          <thead style="color: #012970;background-color: #326ef61a;font-weight: 100;">
+            <tr>
+              <th valign="bottom" style="text-align: center;font-weight: 600;"> S.NO </th>
+              <th valign="bottom" style="font-weight: 600;"> SUC </th>
+              <th valign="bottom" style="text-align: left;white-space: nowrap;font-weight: 600;">STUDENT NAME </th>
+              <th valign="bottom" style="text-align: left;white-space: nowrap;font-weight: 600;">BRANCH </th>
+              <th style="width: 50px;background-color:#ececec;text-align: center;"
+                *ngFor="let s of convertedData[0].subjects">
+                <table width="100%" border="0" cellspacing="3" cellpadding="3" role="sub1" style="font-weight: 600">
+                  <tbody>
+                    <tr>
+                      <td colspan="8" style="background-color: #256EF9;color: #fff;height: 24px;"> {{s.subjectname}}
+                        &nbsp; ({{s.maxmarks}}) </td>
+                       
+                    </tr>
+                    <tr>
+                      <td colspan="6" style="border-bottom: 1px #ccc solid;height: 24px;"> Q. ANALYSIS </td>
+                    
+                      <td rowspan="2" style="line-height: 1;
+                                              position: relative;
+                                              -webkit-transform: rotate(180deg);
+                                              transform: rotate(180deg);
+                                              white-space: nowrap;
+                                              -webkit-writing-mode: vertical-rl;
+                                              writing-mode: vertical-rl;
+                                              border-radius: 0 5px 5px 0;
+                                              padding: 0 0.8rem;
+                                              text-align: center;
+                                              text-shadow: 0px 2px 2px rgb(0 0 0 / 5%);
+                                              letter-spacing: 0.9px;width: 69px;">TIME</td>
+                      <td rowspan="2" style="line-height: 1;
+                                              position: relative;
+                                              -webkit-transform: rotate(180deg);
+                                              transform: rotate(180deg);
+                                              white-space: nowrap;
+                                              -webkit-writing-mode: vertical-rl;
+                                              writing-mode: vertical-rl;
+                                              border-radius: 0 5px 5px 0;
+                                              padding: 0 0.8rem;
+                                              text-align: center;
+                                              text-shadow: 0px 2px 2px rgb(0 0 0 / 5%);
+                                              letter-spacing: 0.9px;width: 69px;">RANK</td>
+                    </tr>
+                    <tr>
+                      <td
+                        style="box-sizing: border-box; min-width: 40px;padding:3px 0;margin: 0;box-sizing: content-box;background-color: #D1E7DD;color: #125133 !important;text-align: center;border: 1px #ccc solid;">
+                        R </td>
+                      <td
+                        style="box-sizing: border-box; min-width: 40px;padding: 0;margin: 0;box-sizing: content-box;background-color: #F7D7DA;color: #831F2B !important;text-align: center;border: 1px #ccc solid;">
+                        W </td>
+                      <td
+                        style="box-sizing: border-box; min-width: 40px;padding: 0;margin: 0;box-sizing: content-box;background-color: #FEF3CF;color: #654D0D !important;text-align: center;border: 1px #ccc solid;">
+                        L </td>
+                        <td style="box-sizing: border-box; min-width: 35px;border: 1px #a4cfbb solid;    color: #495057;text-align: center;">RM</td>
+		  <td style="box-sizing: border-box;min-width: 35px;color: #055160;border: 1px #f0aeb6 solid;text-align: center;" ng-show="program!='EAMCET'">WM</td>
+                      <td
+                        style="box-sizing: border-box; min-width: 40px;padding: 0;margin: 0;box-sizing: content-box;background: #d0e2fe;color: #052c65;text-align: center;border: 1px #ccc solid;">
+                        MARKS </td>
+                        
+                    </tr>
+                  </tbody>
+                </table>
+              </th>
+              <th style="text-align: center;line-height: 1;
+                                  position: relative;
+                                  -webkit-transform: rotate(180deg);
+                                  transform: rotate(180deg);
+                                  white-space: nowrap;
+                                  -webkit-writing-mode: vertical-rl;
+                                  writing-mode: vertical-rl;
+                                  border-radius: 0 5px 5px 0;
+                                  padding: 0 0.8rem;
+                                  text-align: center;
+                                  text-shadow: 0px 2px 2px rgb(0 0 0 / 5%);
+                                  letter-spacing: 0.9px;
+                                  width: 29px;font-weight: 600"> Total Marks </th>
+              <th style="text-align: center;font-weight: 600"> Time <br />
+                <!-- ( {{convertMinutesToHoursMinutesSeconds(stuResult[0].duration)}}) -->
+
+                <div style="font-size: 10px;opacity: 0.5;">(HH:MM:SS)</div>
+              </th>              
+              <th style="text-align: center;font-weight: 600"> % </th>
+              <th style="text-align: center;font-weight: 600"> Rank </th>
+            </tr>
+          </thead>
+          <tbody *ngFor="let x of convertedData  | filter:filtertext  | filter :searchText ;let i=index"
+            class="ng-scope">
+            <tr style="border-bottom: 1px #ccc solid">
+              <td style="text-align: center;">{{i+1}} </td>
+              <td style="text-align: center;
+                                  color: #654D0D !important;padding: 9px;width:150px;">{{x.suc}} 
+                                  <!-- <a
+                  style="text-decoration: none;cursor: pointer;color: #fff;display: inline-flex;justify-content: space-between;align-items: center;background: #1f8755;
+                                     padding-right: 5px; padding-left: 5px;line-height: 19px;border-radius: 3px;column-gap: 3px;margin-left: 10px" title="{{x.suc}}">
+                                      <i class="bi bi-file-earmark-pdf-fill" style="color: #fff;"></i> 
+                    <span>QR</span> </a> -->
+                  </td>
+              <td style="text-align:left;white-space:nowrap;max-width:300px;">
+                {{x.studentname}} </td>
+              <td style="text-align: center;white-space:nowrap" [style.background-color]="x.examtype === 'Online' ? '#D1E7DD' : '#d9d3be'">{{x.branch}} </td>
+              <td style="text-align: center;" *ngFor="let y of x.subjects">
+                <table width="100%" border="0" cellspacing="3" cellpadding="3" role="cnt1">
+                  <tbody>
+                    <tr style="line-height: 24px;">
+                      <td
+                        style="box-sizing: border-box; min-width: 40px;padding: 0;margin: 0;box-sizing: content-box;background-color: #D1E7DD;color: #125133 !important;text-align: center;border: 1px #ccc solid;">
+                        {{y.resultr}} </td>
+                      <td
+                        style="box-sizing: border-box; min-width: 40px;padding: 0;margin: 0;box-sizing: content-box;background-color: #F7D7DA;color: #831F2B !important;text-align: center;border: 1px #ccc solid;">
+                        {{y.resultw}} </td>
+                      <td
+                        style="box-sizing: border-box; min-width: 40px;padding: 0;margin: 0;box-sizing: content-box;background-color: #FEF3CF;color: #654D0D !important;text-align: center;border: 1px #ccc solid;">
+                        {{y.resultl}} </td>
+                        
+                        <td style="box-sizing: border-box; min-width: 35px;border: 1px #a4cfbb solid;    color: #495057;text-align: center;">
+                          {{y.studentRight}}
+                        </td>
+                          <td style="box-sizing: border-box;min-width: 35px;color: #055160;border: 1px #f0aeb6 solid;text-align: center;" ng-show="program!='EAMCET'">
+                          {{y.studentWrong}}
+                        </td>
+                      <td
+                        style="box-sizing: border-box; min-width: 40px;padding: 0;margin: 0;box-sizing: content-box;background: #d0e2fe;color: #052c65;text-align: center;border: 1px #ccc solid;">
+                        {{y.marks}} </td>
+                      <td
+                        style="box-sizing: border-box; min-width: 40px;padding: 0;margin: 0;box-sizing: content-box;background: #ececec;border-right: 1px #ccc solid;text-align: center;border: 1px #ccc solid;">
+                        <!-- {{ secondsToMinutesAndSeconds( (1*y.timespentr) + (1*y.timespentw) + (1*y.timespentl)) }}  -->
+                        <!-- {{ ((y.timespentr + y.timespentw + y.timespentl) / 60) | number: '2.2' }} -->
+                        {{y.subjectime}}
+
+                      </td>
+                      <td
+                        style="box-sizing: border-box; min-width: 40px;padding: 0;margin: 0;box-sizing: content-box;background: #ececec;border-right: 1px #ccc solid;text-align: center;border: 1px #ccc solid;">
+                        {{ y.subjectrank}} </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </td>
+              <td
+                style="width: 37px;padding: 0;margin: 0;box-sizing: content-box;color: #052c65;text-align: center;position: relative">
+                <div style="background: #d1e2fd;height: 26px;width:40px;line-height: 25px;border: 1px #ccc solid;">
+                  {{x.total}} </div>
+              </td>
+              <td style="text-align: center;"> {{x.TotalTime}}
+              </td>
+               
+              <td style="text-align: center;"> {{x.percentile }} </td>
+              <td style="text-align: center;"> {{x.rank}} </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+</main>

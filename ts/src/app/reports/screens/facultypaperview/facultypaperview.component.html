@@ -1,0 +1,78 @@
+<main id="main" class="main">
+    <section class="section dashboard">
+        <div class="row">
+            <div class="col-md-12" *ngIf="questions">
+                <div class="row">
+                    <div class="col-md-12">
+                        <section class="card card-body py-3" *ngFor="let x of questions; let i = index;">
+                            <article class="d-md-flex align-items-center justify-content-between">
+                                <h5 class="card-title mb-0 pb-2 pb-md-0">{{x.subject_master_name}} <span
+                                        class="text-muted">|
+                                        {{x.topic_master_name|uppercase}}</span>
+                                </h5>
+
+
+
+                                <div class="small" *ngIf="x.tag_name.includes('PEP')">
+
+                                    <span class="frame">
+                                        <img src="assets/img/star.svg" style="height: 16px;" />
+                                        <span class="small" >{{x.tag_name}}</span>
+                                    </span>
+                                </div>
+                            </article>
+                            <aside class="d-flex align-items-center gap-2 justify-content-between">
+                                <div class="fw-bold mb-1" style="font-size: 18px;">
+                                    <i class="bi bi-quora"></i>.&nbsp;{{i+1}}<span class="total-marks"></span>
+                                </div>
+                                <div role="End Div" class="d-flex align-items-center gap-3">                                     
+                                    <section class="d-flex align-items-center gap-2 my-3 my-sm-0">
+                                        <img src="assets/img/icons/{{x.question_level_name | lowercase}}.png"
+                                            class="easyIcon">
+                                        <div class="fw-normal small"><span>{{x.question_level_name}}</span><span
+                                                class="text-muted">&nbsp;|&nbsp;{{x.question_type_name}}</span></div>
+                                    </section>
+                                </div>
+                            </aside>
+                            <hr class="p-0" style="margin: 0 0 8px 0;">
+                            <p><span [appMathJax]="x.question_master_desc">{{x.question_master_desc}}</span></p>
+                            <div class="row g-3">
+                                <div class="col-lg">
+                                    <article class="bs-card shadow-sm" *ngIf="x.question_type_name!='Numeric2020'">
+                                        <ul class="m-0 p-0 fw-bold-off">
+                                            <li class="d-flex align-items-center gap-2 mb-3 bs-bar"
+                                                *ngFor='let y of x.ans; let j=index;'>
+                                                {{j+1}}
+                                                <span
+                                                    [appMathJax]="y.answer_master_desc">{{y.answer_master_desc}}</span>
+                                                <span class="fa-stack text-success fs-4">
+                                                    <i class="bi bi-check-lg text-success"
+                                                        *ngIf="y.answer_master_isright==1"></i>
+
+                                                </span>
+                                            </li>
+                                        </ul>
+                                    </article>
+                                    <article class="bs-card shadow-sm" *ngIf="x.question_type_name=='Numeric2020'">
+                                        <ul class="m-0 p-0 fw-bold-off">
+                                            <li class="d-flex align-items-center gap-2 mb-3 bs-bar">
+                                                <span
+                                                    [appMathJax]="x.ans[1].answer_master_desc">{{x.ans[1].answer_master_desc}}</span>
+                                                <span class="fa-stack text-success">
+                                                    <i class="fa fa-check text-success"></i>
+                                                </span>
+                                            </li>
+                                        </ul>
+                                    </article>
+                                </div>
+
+                            </div>
+                        </section>
+ 
+                    </div>
+                </div>
+            </div>
+
+</div>
+</section>
+</main>

@@ -1,0 +1,66 @@
+<main id="main" class="main">
+  <div style="background-color:white;padding:15px;">
+    <table class="cstm-table2">
+      <thead>
+        <th colspan="13">
+          <div style="text-align: left;display: flex;column-gap: 20px;justify-content: space-between;flex-direction: column;align-items: center;background: #f5f5f5;margin-left: -3px;
+          height: 34px;border: 1px #ccc solid;line-height: 32px;font-size: 16px;margin-bottom:20px;">
+            <span>
+              Question wise analysis</span>
+          </div>
+          <aside
+            style="display: flex;justify-content: space-between;column-gap: 10px;font-size: 14px;font-weight: 700;text-transform: uppercase;margin-left: -3px;">
+            <span>{{result[0].student}}
+            </span>
+            <span>{{result[0].examname}}</span>
+          </aside>
+          <div
+            style="font-weight: 100;font-size:12px;background: #cccccc30;border: 1px #ccc solid;margin-left: -4px;padding: 5px 0;text-indent: 7px;">
+            <b>Typ:</b> <span style="opacity: 0.5;">QType</span>&nbsp;&nbsp;
+            <b>Time:</b><span style="opacity: 0.5;"> Time Spent</span>&nbsp;&nbsp;
+            <b>QM:</b> <span style="opacity: 0.5;"> Question Marks</span>&nbsp;&nbsp;
+            <b>MKS:</b><span style="opacity: 0.5;"> Marks Obtained</span>&nbsp;&nbsp;
+            <b>RS:</b> <span style="opacity: 0.5;"> R-Rignt,W-Wrong,L-Left</span>&nbsp;&nbsp;
+            <b>LVL:</b><span style="opacity: 0.5;"> H-Hard M-Medium E-Easy</span>
+          </div>
+        </th>
+      </thead>
+      <thead class="bg-blue">
+        <tr class="bg-blue">
+          <th class="text-center" style="width: 10px;padding: 2px;">#</th>
+          <th class="text-center" style="width: 30px;padding: 2px;">Sub</th>
+          <th class="text-center">Topic-Subtopic</th>
+          <th class="text-center" style="width: 25px;padding: 2px;">Typ</th>
+          <th class="text-center" style="width: 25px;padding: 2px;">TIME</th>
+          <th class="text-center" style="width: 25px;padding: 2px;">QM</th>
+          <th class="text-center" style="width: 25px;padding: 2px;">MKS</th>
+          <th class="text-center" style="width: 25px;padding: 2px;">RS</th>
+          <th class="text-center" style="width: 25px;padding: 2px;">ATM%</th>
+          <th class="text-center" style="width: 25px;padding: 2px;">R%</th>
+          <th class="text-center" style="width: 25px;padding: 2px;">W%</th>
+          <th class="text-center" style="width: 25px;padding: 2px;">LVL</th>
+          <!-- <th class="text-center">Video</th> -->
+        </tr>
+      </thead>
+      <tbody *ngFor="let y of result; let i=index">
+        <tr [ngClass]="{'boldText': y.result !== 'R', '': y.result === 'R'}">
+          <td class="text-center" style="cursor:pointer;padding: 2px;">{{i+1}}
+          </td>
+          <td style="padding: 2px;">{{y.subject_master_name}}</td>
+          <td style="padding: 2px;"><small>{{y.topicname}}-{{getsubtpcname(y.questionid,i)}}</small></td>
+          <td style="padding: 2px;">{{y.qtype}}</td>
+          <td class="text-center" style="padding: 2px;">{{ y.timespent}}</td>
+          <td class="text-center" style="padding: 2px;">{{y.questionmark}}</td>
+          <td class="text-center" style="padding: 2px;">{{y.studentmarks}}</td>
+          <td class="text-center" style="padding: 2px;">{{y.result}}</td>
+          <td class="text-center" style="padding: 2px;">{{y.ATT}}</td>
+          <td class="text-center" style="padding: 2px;">{{y.RPER}}</td>
+          <td class="text-center" style="padding: 2px;">{{y.WPER}}</td>
+          <td class="text-center" style="padding: 2px;">
+            {{getimpression(y.RPER)}}
+            <!-- {{y.questionid}} -->
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>

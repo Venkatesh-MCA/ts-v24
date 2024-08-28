@@ -1,0 +1,382 @@
+<main id="main" class="main">
+  <section class="section dashboard">
+    <div class="row">
+      <!-- Left side columns -->
+      <div class="col-12">
+        <div class="row">
+          <!-- Sales Card -->
+          <div class="col-xxl-3 col-md-6">
+            <div class="card info-card sales-card">
+              <div class="card-body">
+                <h5 class="card-title">Question bank</h5>
+                <div class="d-flex align-items-center justify-content-between">
+                  <div class="card-icon rounded-circle d-flex align-items-center justify-content-center"> <i
+                      class="bi bi-question-square"></i> </div>
+                  <div class="ps-3" *ngIf="totalqdata">
+                    <h6>{{totalqdata}}</h6>
+                    <!--
+                    <span class="text-success small pt-1 fw-bold">12%</span> <span
+                      class="text-muted small pt-2 ps-1">increase</span>
+-->
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- End Sales Card -->
+          <!-- Customers Card -->
+          <div class="col-xxl-3 col-md-6">
+            <div class="card info-card customers-card">
+              <div class="card-body">
+                <h5 class="card-title">Students</h5>
+                <div class="d-flex align-items-center justify-content-between">
+                  <div class="card-icon-red card-icon rounded-circle d-flex align-items-center justify-content-center">
+                    <i class="bi bi-people"></i>
+                  </div>
+                  <div class="ps-3" *ngIf="totalstds">
+                    <h6>{{totalstds}}</h6>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- End Customers Card -->
+          <!-- Revenue Card -->
+          <div class="col-xxl-3 col-md-6">
+            <div class="card info-card revenue-card">
+              <div class="card-body">
+                <h5 class="card-title">Question papers</h5>
+                <div class="d-flex align-items-center justify-content-between">
+                  <div class="card-icon rounded-circle d-flex align-items-center justify-content-center"> <i
+                      class="bi bi-file-earmark-pdf"></i> </div>
+                  <div class="ps-3" *ngIf="totalpapers">
+                    <h6>{{totalpapers}}</h6>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- End Revenue Card -->
+
+          <!-- Recent Sales -->
+          <!-- Customers Card -->
+          <div class="col-xxl-3 col-md-6">
+            <div class="card info-card customers-card">
+              <div class="card-body">
+                <h5 class="card-title">Answer sheets</h5>
+                <div class="d-flex align-items-center justify-content-between">
+                  <div class="card-icon rounded-circle d-flex align-items-center justify-content-center"> <i
+                      class="bi bi-card-checklist"></i> </div>
+                  <div class="ps-3" *ngIf="totalexam">
+                    <h6>{{totalexam}}</h6>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- End Customers Card -->
+          <div class="col-xxl-12 col-md-12">
+            <div class="card recent-sales overflow-auto">
+              <div class="card-body">
+                <div class="hstack gap-3">
+                  <h5 class="card-title">Recent Exams <span>| Today</span></h5>
+                  <form class="search-form d-flex align-items-center gap-3 ms-auto">
+                    <select id="campusname" class="form-select" name="campusname" [(ngModel)]="campusname"
+                      (change)="selectcampus(campusname)">
+                      <option value="All" selected="selected">All</option>
+                      <option *ngFor="let c of branchlistData" [ngValue]="c._id" [selected]="c._id==campusname">
+                        {{c._id}}</option>
+                    </select>
+                    <input type="text" id="text" class="form-control flex-grow-1" name="filtertext"
+                      [(ngModel)]="searchText" (keyup)="searchdatafilter(searchText)" title="Enter search keyword"
+                      placeholder="Papercode Search....!" />
+                  </form>
+                </div>
+                <!-- {{totalItems}}--{{start}}--{{end}}--{{ind}} -->
+                <table class="table table-bordered datatable cstm-table">
+                  <thead>
+                    <tr>
+                      <th scope="col">#</th>
+                      <th scope="col">Papercode</th>
+                      <th scope="col">Latest Schedule</th>
+                      <th scope="col" class="text-center">Campus</th>
+                      <th scope="col" class="text-center"> Attempted</th>
+                      <th scope="col" class="text-center">Exam</th>
+                      <th scope="col" class="text-center"> Result</th>
+                    </tr>
+                  </thead>
+                  <tbody *ngFor="let x of examlist | filter:filtertext; let i=index">
+                    <tr>
+                      <th scope="row"><a href="#">{{i+1}}</a></th>
+                      <td>{{x._id}} &nbsp; </td>
+                      <td>
+                        <div>{{x.examName}}</div>
+                        <div class="text-primary opacity-75 hstack gap-3 timebar"> <img src="assets/img/calendar.svg"
+                            class="timebar-cal"> <span>{{x.examStartDateTime | date:'yyyy-MM-dd hh:mm a' }}</span> <i
+                            class="bi bi-arrow-bar-right bi bi-arrow-right fs-6 text-dark"></i>
+                          <span>{{x.examEndDateTime | date:'yyyy-MM-dd hh:mm a' }}</span>
+                        </div>
+                      </td>
+                      <td class="text-center">{{x.Branch}}</td>
+                      <td class="text-center">{{x.totalattend}}</td>
+
+                      <!-- <td class="text-center" *ngIf="x.resultinfo.length==0">0</td> -->
+                      <td scope="col" class="text-start">
+                        <div class="d-flex justify-content-between align-items-center gap-1"> 
+                          <img
+                            src="assets/img/vgroups.svg" class="svgIcons card-icon-blue" title="Exam Schedules" alt=""
+                            data-bs-toggle="modal" data-bs-target="#virtualModal" (click)="show_groups(x._id)" />
+                          <!-- <img src="assets/img/question.svg" class="svgIcons card-icon-green" title="Question Paper"
+                            alt="" (click)="download_paper('questionpaper',x.papercode)" /> -->
+
+                          <!-- <div class="dropdown" [ngClass]="x.resultinfo.length==0 ? 'disabled' : ''">
+                            <div class="dropdown-toggle card-icon-green" type="button" data-bs-toggle="dropdown"
+                              aria-expanded="false"
+                              style="border:1px #e3e5f7 solid!important; border-radius:4px;padding-right:4px;">
+                              <img src="assets/img/stren.svg" style="border:0!important;height:13px;margin-right: -4px;"
+                                class="svgIcons  dropdown-toggle" title="Branch Strengths" alt="" />
+                            </div>
+                            <ul class="dropdown-menu" style="min-width:320px">
+                              <li class="py-2 px-3">
+                                <div class="row g-3">
+                                  <div class="col-12" *ngIf="x.resultinfo.length!=0">
+                                    <h6 class="border-bottom mb-3 pb-3 fw-bolder">Branchwise Strength</h6>
+                                    <span *ngFor="let b of x.resultinfo">
+
+                                      <button type="button" class="btn btn-light btn-sm mb-1">
+                                        {{b.branch}} <span class="badge bg-white text-primary">{{b.count}}</span>
+                                      </button>
+
+                                    </span>
+
+
+                                  </div>
+
+
+
+                                </div>
+                              </li>
+
+                            </ul>
+                          </div> -->
+                          
+                          <!-- <img src="assets/img/vgroups.svg" class="svgIcons card-icon-blue" title="Exam Schedules"
+                            alt="" data-bs-toggle="modal" data-bs-target="#virtualModal" (click)="show_groups(x._id)" /> -->
+
+                          <div class="dropdown">
+                            <div class="dropdown-toggle card-icon-green" type="button" data-bs-toggle="dropdown"
+                              aria-expanded="false"
+                              style="border:1px #e3e5f7 solid!important; border-radius:4px;padding-right:4px;"> <img
+                                src="assets/img/question.svg" style="border:0!important"
+                                class="svgIcons  dropdown-toggle" title="Question Paper" alt="" />
+                            </div>
+                            <ul class="dropdown-menu" style="min-width:320px">
+                              <li class="py-2 px-3">
+                                <div class="row g-3">
+                                  <div class="col-12">
+                                    <h6 class="border-bottom mb-3 pb-3 fw-bolder">Question/Hints-Solution Papers</h6>
+
+                                    <select class="form-select" style="width:100%!important"
+                                      [(ngModel)]="selectpapertype">
+                                      <option value="">Select Papertype</option>
+                                      <option value="questionpaper">Question Paper</option>
+                                      <option value="hints">Hints Solutions</option>
+                                    </select>
+                                  </div>
+
+
+
+                                </div>
+                              </li>
+                              <div type="submit" class="hstack gap-1 fullBt"
+                                (click)="download_paper(selectpapertype,x.papercode)">
+                                <i class="bi bi-cloud-arrow-down fs-5"
+                                  style="line-height:25px;"></i><span>Download</span>
+                              </div>
+                            </ul>
+                          </div>
+
+                          <div class="dropdown">
+                            <div class="dropdown-toggle card-icon-orange" type="button" data-bs-toggle="dropdown"
+                              aria-expanded="false"
+                              style="border:1px #e3e5f7 solid!important; border-radius:4px;padding-right:4px;"
+                              (click)="ppt_dialog('PPT',x._id)"> <img src="assets/img/ppt.svg"
+                                style="border:0!important" class="svgIcons  dropdown-toggle" title="PPT" alt="" />
+                            </div>
+                            <ul class="dropdown-menu" *ngIf="selectpapercode!=''" style="min-width: 320px;">
+                              <li class="py-2 px-3">
+                                <div class="row g-3">
+                                  <div class="col-12">
+                                    <h6 class="border-bottom mb-3 pb-3 fw-bolder"> PPT</h6>
+                                    <select class="form-select w-100" [(ngModel)]="selectsubject"
+                                      (ngModelChange)="selectingsub(selectsubject)">
+                                      <option *ngFor="let c of unisubjects">{{c}}</option>
+                                    </select>
+                                  </div>
+
+                                </div>
+                              </li>
+                              <div class="hstack gap-1 fullBt" (click)="download_ppt(selectpapercode,selectsubject)">
+                                <i class="bi bi-cloud-arrow-down fs-5"
+                                  style="line-height:25px;"></i><span>Download</span>
+                              </div>
+                            </ul>
+                          </div>
+
+                          <div class="dropdown">
+                            <div class="dropdown-toggle card-icon-red" type="button" data-bs-toggle="dropdown"
+                              aria-expanded="false"
+                              style="border:1px #e3e5f7 solid!important; border-radius:4px;cursor:pointer;padding-right:4px;"
+                              (click)="ppt_dialog('PPThints',x._id)">
+                              <img src="assets/img/ppt-response.svg" style="border:0!important" class="svgIcons"
+                                title="PPT with Hints" alt="" />
+                            </div>
+                            <ul class="dropdown-menu" *ngIf="selectpapercode!=''" style="min-width:320px;">
+                              <li class="py-2 px-3">
+                                <div class="row g-3">
+                                  <div class="col-12">
+                                    <h6 class="border-bottom mb-3 pb-3 fw-bolder"> PPT Hints</h6>
+                                    <select class="form-select w-100" [(ngModel)]="selectsubject"
+                                      (ngModelChange)="selectingsub(selectsubject)">
+                                      <option *ngFor="let c of unisubjects">{{c}}</option>
+                                    </select>
+                                  </div>
+
+                                </div>
+                              </li>
+                              <div class="hstack gap-1 fullBt"
+                                (click)="downoad_ppthints(selectpapercode,selectsubject)">
+
+                                <i class="bi bi-cloud-arrow-down fs-5"
+                                  style="line-height:25px;"></i><span>Download</span>
+                              </div>
+                            </ul>
+                          </div>
+
+                          <div class="dropdown-toggle card-icon-red" type="button" data-bs-toggle="dropdown"
+                            aria-expanded="false"
+                            style="border:1px #e3e5f7 solid!important; border-radius:4px;cursor:pointer;padding-right:4px;"
+                            (click)="ppt_dialog('videolist',x._id)">
+                            <img src="assets/img/video-links.svg" style="border:0!important" class="svgIcons"
+                              title="Video Links" alt="" />
+                          </div>
+                          <ul class="dropdown-menu" *ngIf="selectpapercode!=''" style="min-width:320px;">
+                            <li class="py-2 px-3">
+                              <div class="row g-3">
+                                <div class="col-12">
+                                  <h6 class="border-bottom mb-3 pb-3 fw-bolder">Video List</h6>
+                                  <select class="form-select" [(ngModel)]="selectsubject"
+                                    (ngModelChange)="selectingsub(selectsubject)">
+                                    <option *ngFor="let c of unisubjects" selected="selected">{{c}}</option>
+                                  </select>
+                                </div>
+
+                              </div>
+                            </li>
+                            <div class="hstack gap-1 fullBt"
+                              (click)="download_videolist(selectpapercode,selectsubject)">
+                              <i class="bi bi-cloud-arrow-down fs-5" style="line-height:25px;"></i><span>Download</span>
+                            </div>
+                          </ul>
+                        </div>
+                      </td>
+                      <td scope="col" class="text-start">
+                        <div class="d-flex justify-content-between align-items-center gap-1">
+                          <a href="#/reports/result/{{x._id}}" [ngClass]="x.resultinfo.length==0 ? 'disabled' : ''">
+                            <img src="assets/img/result.svg" class="svgIcons card-icon-blue" title="Result" alt="" />
+                          </a>
+                          <a href="#/reports/qr/{{x._id}}" [ngClass]="x.resultinfo.length==0 ? 'disabled' : ''"><img
+                              src="assets/img/question-response.svg" class="svgIcons card-icon-green"
+                              title="Question Response" alt="" /> </a>
+                          <a href="#/reports/strength/{{x._id}}" [ngClass]="x.resultinfo.length==0 ? 'disabled' : ''">
+                            <img src="assets/img/attendance-21.png" class="svgIcons card-icon-orange" title="Attendance"
+                              alt="" />
+                          </a>
+                        </div>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              <nav aria-label="..." *ngIf="examlist!=''">
+                <ul class="pagination d-flex justify-content-center mb-5">
+                  <li class="page-item" [class.disabled]="ind === 0"> <a class="page-link" href="javascript:void(0);"
+                      aria-label="Previous" (click)="limittoprev(ind-1,start,end)"> <span
+                        aria-hidden="true">&laquo;</span> </a> </li>
+                  <li class="page-item" [class.disabled]="currentPage === 1"> <a class="page-link"
+                      href="javascript:void(0);" tabindex="-1" (click)="onPageChange(currentPage - 1)">Previous</a>
+                  </li>
+                  <li class="page-item" *ngFor="let page of pages | slice:start:end"
+                    [class.active]="currentPage === page"><a class="page-link" href="javascript:void(0);"
+                      (click)="onPageChange(page)">{{ page }}</a></li>
+                  <li class="page-item" [class.disabled]="currentPage === totalPages"> <a class="page-link"
+                      href="javascript:void(0);" (click)="onPageChange(currentPage + 1)">Next</a> </li>
+                  <!-- {{currentPage}}=========
+                  {{ind}}==={{start}}---{{end}} -->
+                  <li class="page-item" [class.disabled]="ind === 4"> <a class="page-link" href="javascript:void(0);"
+                      aria-label="Next" (click)="limittos(ind+1,start,end)"> <span aria-hidden="true">&raquo;</span>
+                    </a> </li>
+                </ul>
+              </nav>
+            </div>
+          </div>
+          <!-- End Recent Sales -->
+        </div>
+      </div>
+      <!-- End Left side columns -->
+      <div class="modal fade" id="virtualModal" aria-labelledby="exampleModalLabel">
+        <div class="modal-dialog modal-dialog-centered  modal-xl">
+          <div class="modal-content">
+            <div class="modal-header my-2">
+              <div class="modal-title-off" id="exampleModalLabel">
+                <label class="form-label" class="form-label" class="form-label" class="form-label" *ngIf="schedules">
+					<div class="card-title m-0 p-0"> {{schedules[0].papercode}}</div>
+                </label>
+                <br>
+                <!-- <span class="text-muted" *ngIf="schedules">{{schedules[0].papercode}} </span> -->
+              </div>
+             
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body" style="height: 480px; overflow-y: scroll;">
+              <table class="table table-bordered">
+                <thead>
+                  <tr>
+                    <th>#</th>
+                    <th>Exam Details</th>
+                    <th>Branch</th>
+                    <th>Virtual Groups</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let g of schedules;let i=index">
+                    <td>{{i+1}}</td>
+                    <td>{{g.examName}}
+                      <br />
+                      <div class="text-primary opacity-75 hstack gap-3 timebar"> <img src="assets/img/calendar.svg"
+                          class="timebar-cal"> <small>{{g.examStartDateTime | date:'yyyy-MM-dd hh:mm a' }}</small> <i
+                          class="bi bi-arrow-bar-right bi bi-arrow-right fs-6 text-dark"></i>
+                        <small>{{g.examEndDateTime | date:'yyyy-MM-dd hh:mm a' }}</small>
+                      </div>
+                    </td>
+                    <td>
+                      <button type="button" class="btn btn-light btn-sm mb-1">
+                        {{g.Branch}}&nbsp; [{{g.vg_strength}}]
+                      </button>
+                    </td>
+                    <td>
+                      <span *ngFor="let v of g.groups"><b>{{v.groupID}}</b>-{{v.groupName}} &nbsp; -  [{{v.strength}}]<br /> </span>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <!-- <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div> -->
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>

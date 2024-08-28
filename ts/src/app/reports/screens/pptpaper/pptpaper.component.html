@@ -1,0 +1,76 @@
+<div *ngFor="let x of qdata"
+  style="background-image: linear-gradient(90deg, #E5EBFB -31.34%, #C8EBFB 1.93%, #F0FAFF 38.97%, #D4E1FB 76.94%, #D5E0FB 118.4%, #F0F4FC 118.4%)!important; padding:10px;">
+  <img src="assets/headerimages/pptheader.jpg" style="width:100%;margin-bottom:10px" />
+  <div>
+
+    <table style="font-size:30px; width:100%">
+
+      <thead>
+
+        <tr>
+
+        </tr>
+        <tr>
+          <td colspan="2">
+            <hr style="margin:0px 0" />
+          </td>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td colspan="2">
+            {{x.question_master_id}}
+
+
+          </td>
+        </tr>
+
+        <tr>
+          <td>
+            <span
+              style="margin:0px; margin-bottom:1px; text-align:justify; display:block; padding-right:80px;font-size:30px;"
+              [appMathJax]="x.question_master_desc">{{x.question_master_desc}}</span>
+            <div [hidden]="x.question_master_type == 4 || x.question_master_type == 12"
+              style="padding-top:32px;padding-bottom: 7px;color:#f87c02;">Options</div>
+
+            <ol type="1" [hidden]="x.question_master_type == 4 || x.question_master_type == 12">
+              <li *ngFor="let y of x.ans"
+                style="padding-right:30px; margin-bottom:5px; float:left; min-width:120px; padding-bottom:2px;content: counter(list, decimal)">
+
+                <span [appMathJax]="y.answer_master_desc">{{y.answer_master_desc}}</span>
+
+              </li>
+
+              <div style="clear:both"></div>
+            </ol>
+          </td>
+        </tr>
+
+
+
+
+      </tbody>
+      <tfoot>
+        <tr>
+          <td colspan="3">
+            <hr style="margin:0px 0" />
+          </td>
+        </tr>
+
+      </tfoot>
+    </table>
+  </div>
+  <div class="footer">
+    &nbsp;
+  </div>
+
+  <div class="footer">
+    &nbsp;
+  </div>
+
+
+
+  <div class="page-break"></div>
+  <div style="clear:both"></div>
+
+</div>

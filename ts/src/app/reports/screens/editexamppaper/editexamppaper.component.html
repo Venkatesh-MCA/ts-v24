@@ -1,0 +1,83 @@
+<main id="main" class="main">
+    <section class="section dashboard">
+        <div class="row">
+<div class="col-md-12" *ngIf="qpaper!=''">
+    <div class="card">
+        <div class="card-body">
+            <div class="d-flex justify-content-between mb-3">
+                <h5 class="card-title mb-0 pb-0">
+                    <!-- {{x.program}} - ({{x.tagname}})  -->
+                    <span class="text-muted">| # Description</span>
+                </h5>
+                <div class="d-flex align-items-center">
+                    <div class="mr-3"  (click)="update_paper('update')">
+                        <button type="button" class="btn btn-sm btn-warning">Save</button> 
+                    </div>
+                    &nbsp;&nbsp;
+
+                    <div class="mr-3" (click)="update_paper('lock')">
+                        <button type="button" class="btn btn-sm btn-success">Lock</button>
+                    </div>
+                </div>
+            </div>
+
+            <hr class="mb-3" />
+            <div *ngFor="let y of qpaper; let i = index;">
+                <aside>
+                    <div class="d-flex justify-content-between">
+                        <aside class="d-flex justify-content-start align-items-center gap-2">
+                            <i class="fa fa-quora fa"></i>
+                        </aside>
+                    </div>
+                    <div class="hscroll mt-2">
+                        <span>{{i + 1}}. <span [appMathJax]="y.question_master_desc_new">{{y.question_master_desc_new}}</span></span>
+
+                    </div>
+                    <section class="d-flex gap-3 justify-content-end">
+                        <div class="float-end">
+                            <span><b>{{y.question_master_id}}--{{y.subject_master_name}}</b> </span>
+
+                        </div>
+                        
+                        <span (click)="ShuffleQue(i)" title="Shuffle Question">
+                            <i class="bi bi-shuffle" style="cursor: pointer;"></i>
+                          </span>
+                          <br>
+                          <span (click)="ChangeRelatedQue(i)">
+                         <i class="bi bi-hand-index" style="cursor: pointer;" data-bs-toggle="modal"data-bs-target="#basicModal"></i>
+                           
+                          </span>
+                    </section>
+
+                    <div class="options-container mt-3 d-flex flex-column"
+                        *ngFor="let z of y.ans; let innerIndex = index">
+                        <span>{{innerIndex + 1}}. <span [appMathJax]="z.answer_master_desc_new">{{z.answer_master_desc_new}}</span></span>
+
+                    </div>
+                    <span><b>Hints/Solutions: </b><span  [appMathJax]="y.question_master_hint_new">
+                            {{y.question_master_hint_new}}</span></span>
+                </aside>
+            </div>
+
+
+
+            <!-- <div class="card-footer p-0 bg-white">
+    <table class="w-100 text-center">
+       <tr>
+          <td>
+             <div class="text-center">
+              <h3>Key</h3>
+              <div style="float:left;margin:10px 0px; width:65px;" *ngFor="let x of Key.key; let i = index">
+                <span>{{i + 1}}. {{x.ans}}</span>
+              </div>
+             </div>
+          </td>
+       </tr>
+    </table>
+ </div> -->
+        </div>
+    </div>
+</div>
+</div>
+</section>
+</main>

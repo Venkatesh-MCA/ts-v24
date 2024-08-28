@@ -1,0 +1,19 @@
+@page {
+    margin:1.5cm 0.2cm;
+  }
+  .boldText {
+    font-weight: bold;
+  }
+  #main {
+    padding: 0!important;
+    margin: 0!important;
+  }
+  .cstm-table2 {
+    font-size: 11px!important;
+    width:100%;
+  }
+  .cstm-table2 td{
+    border: 1px #ccc solid;
+    border-collapse: collapse;
+    padding:8px 3px!important;
+  }

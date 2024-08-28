@@ -1,0 +1,253 @@
+<main id="main" class="main dashboard">
+  <section class="section">
+    <div class="card bs-card-border" *ngIf="scheduleDetails.length>0">
+      <div class="card-body p-3">
+        <div selectedexam="" class="d-md-flex align-items-center g-3 gap-4 justify-content-between">
+          <aside class="d-flex gap-3 align-items-center">
+
+            <img class="icon_width_30x30 d-none d-md-block"
+              *ngIf="scheduleDetails[scheduleDetails.length-1]?.paperinfo[0]?.language.length>1"
+              src="assets/img/language/CODING.png">
+            <img class="icon_width_30x30 d-none d-md-block"
+              *ngIf="scheduleDetails[scheduleDetails.length-1]?.paperinfo[0]?.language.length==1"
+              src="assets/img/language/{{scheduleDetails[scheduleDetails.length-1]?.paperinfo[0]?.language}}.png">
+            <section class="d-flex flex-column">
+              <div class="title-2 fs-6 text-nowrap">
+                {{scheduleDetails[scheduleDetails.length-1]?.paperinfo[0]?.papername}} </div><small
+                class="d-block small text-nowrap">
+                {{scheduleDetails[scheduleDetails.length-1]?.paperinfo[0]?.paperdescription}}</small>
+            </section>
+          </aside>
+          <div class="d-flex flex-column">
+            <div class="title-4">{{scheduleDetails[scheduleDetails.length-1]?.from_date | date}}</div><small
+              class="title-3">#{{scheduleDetails[scheduleDetails.length-1]?.papercode}}</small>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row dashboard">
+      <div class="col-lg-3 col-sm-6">
+        <div class="card mb-2 bs-card-border info-card sales-card hvr-float-shadow">
+          <div class="card-body">
+            <div class="hstack gap-1 justify-content-between">
+              <h5 class="card-title">Strength</h5>
+            </div>
+            <div class="d-flex align-items-center justify-content-between text-end">
+              <div class="card-icon-blue card-icon rounded-circle d-flex align-items-center justify-content-center">
+                <i class="ri ri-user-fill"></i>
+              </div>
+              <div class="ps-3">
+                <h6> {{FinalStdData.length }} </h6>
+                <!-- <span class="text-success small pt-1 fw-bold">30%</span> -->
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-3 col-sm-6">
+        <div class="card mb-2 info-card bs-card-border revenue-card hvr-float-shadow">
+          <div class="card-body">
+            <div class="hstack gap-1 justify-content-between">
+              <h5 class="card-title">Completed</h5>
+            </div>
+            <div class="d-flex align-items-center justify-content-between text-end">
+              <div class="card-icon-green card-icon rounded-circle d-flex align-items-center justify-content-center">
+                <i class="ri-checkbox-line"></i>
+              </div>
+              <div class="ps-3">
+                <h6>{{completedCount}}<span class="total-marks">/{{selected_result_Data.length}}</span></h6><span
+                  class="text-success small pt-1 fw-bold">{{(completedCount *1 / selected_result_Data.length *1)*100 |
+                  number:
+                  '1.0-2'}}%</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-3 col-sm-6">
+        <div class="card mb-0 info-card bs-card-border customers-card hvr-float-shadow">
+          <div class="card-body">
+            <div class="hstack gap-1 justify-content-between">
+              <h5 class="card-title">Continue</h5>
+            </div>
+            <div class="d-flex align-items-center justify-content-between text-end">
+              <div class="card-icon-yellow card-icon rounded-circle d-flex align-items-center justify-content-center">
+                <i class="bx bx-square"></i>
+              </div>
+              <div class="ps-3">
+                <h6>{{continueCount}}<span class="total-marks">/{{selected_result_Data.length}}</span></h6><span
+                  class="text-warning small pt-1 fw-bold">{{(continueCount *1 / selected_result_Data.length *1)*100 |
+                  number:
+                  '1.0-2'}}%</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-3 col-sm-6">
+        <div class="card mb-2 info-card bs-card-border customers-card hvr-float-shadow">
+          <div class="card-body">
+            <div class="hstack gap-1 justify-content-between">
+              <h5 class="card-title">Not Started</h5>
+            </div>
+            <div class="d-flex align-items-center justify-content-between text-end">
+              <div class="card-icon-red card-icon rounded-circle d-flex align-items-center justify-content-center">
+                <i class="bx bx-window-close"></i>
+              </div>
+              <div class="ps-3">
+                <h6>{{notStartedCount}}<span class="total-marks">/{{selected_result_Data.length}}</span></h6><span
+                  class="text-danger small pt-1 fw-bold">{{(notStartedCount *1 / selected_result_Data.length *1)*100 |
+                  number:
+                  '1.0-2'}}%</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-lg-12" style="margin-top: 20px;">
+      <div class="card bs-card-border recent-sales overflow-auto" *ngIf="vg_result.length>0">
+        <div class="card-body">
+          <div class="row">
+            <div class="col-md-9">
+              <h5 class="card-title"> Virtual Group Result</h5>
+            </div>
+            <div class="col-md-3 text-end mt-3">
+              <button class="btn btn-success btn-sm" (click)="exportToExcel_for_VG()">Excel</button>
+            </div>
+          </div>
+          <table class="table table-borderless datatable">
+            <thead style="text-align: center;">
+              <tr>
+                <th scope="col">S.No</th>
+                <th scope="col">Group Name</th>
+                <th scope="col" style="font-weight:100;" class="text-center  fw-lighter">
+                  <i class="bi bi-people text-primary" title="Strength" style="font-size:19px;"></i>
+                </th>
+                <th scope="col" class="text-center fw-lighter">
+                  <img src="assets/img/exams indication dots/Completed.png" alt="" title="Completed" width="20">
+                </th>
+                <th scope="col" class="text-center fw-lighter">
+                  <img src="assets/img/exams indication dots/Continue.png" alt="" title="Continue" width="20">
+                </th>
+                <th scope="col" class="text-center fw-lighter">
+                  <img src="assets/img/exams indication dots/NotStarted.png" alt="" title="NotStarted" width="20">
+                </th>
+                <th scope="col">Result</th>
+              </tr>
+            </thead>
+            <tbody style="text-align: center;">
+              <tr *ngFor="let x of vg_result; let i=index">
+                <td>{{i+1}}</td>
+                <td class="text-start">{{x.virtual_group_name}}</td>
+                <td title="Strength">{{x.vg_strength}}</td>
+                <td title="Completed">{{x.vg_completed}}</td>
+                <td title="Continue">{{x.vg_continue}}</td>
+                <td title="Not Started">{{x.vg_notstarted}}</td>
+                <td> <button class="btn btn-primary btn-sm" (click)="view_vg_result(x)">View</button> </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-lg-12" style="margin-top: 20px;">
+      <div class="card bs-card-border recent-sales overflow-auto" *ngIf="campuswiseresult">
+        <div class="card-body">
+          <div class="row">
+            <div class="col-md-9">
+              <h5 class="card-title"> Campus Wise Report</h5>
+            </div>
+            <div class="col-md-3 text-end mt-3">
+              <button class="btn btn-primary btn-sm" (click)="exportToExcel_for_ALL()">ALL</button> &nbsp;
+              <button class="btn btn-success btn-sm" (click)="exportToExcel_for_CAMPUS()">Excel</button>
+            </div>
+          </div>
+          <table class="table table-borderless datatable">
+            <thead style="text-align: center;">
+              <tr>
+                <th scope="col">S.No</th>
+                <th scope="col">Campus</th>
+                <th scope="col" style="font-weight:100;" class="text-center  fw-lighter">
+                  <i class="bi bi-people text-primary" title="Strength" style="font-size:19px;"></i>
+                </th>
+                <th scope="col" class="text-center fw-lighter">
+                  <img src="assets/img/exams indication dots/Completed.png" alt="" title="Completed" width="20">
+                </th>
+                <th scope="col" class="text-center fw-lighter">
+                  <img src="assets/img/exams indication dots/Continue.png" alt="" title="Continue" width="20">
+                </th>
+                <th scope="col" class="text-center fw-lighter">
+                  <img src="assets/img/exams indication dots/NotStarted.png" alt="" title="NotStarted" width="20">
+                </th>
+              </tr>
+            </thead>
+            <tbody style="text-align: center;">
+              <tr *ngFor="let x of campuswiseresult; let i=index">
+                <td>{{i+1}}</td>
+                <td (click)="view_result(x.campus)" class="text-start text-primary pointer-class">{{x.campus}}</td>
+                <td title="Strength">{{x.strength}}</td>
+                <td title="Completed">{{x.completed}}</td>
+                <td title="Continue">{{x.continue}}</td>
+                <td title="Not Started">{{x.notstarted}}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-lg-12" style="margin-top: 20px;" *ngIf="finalCmpData.length>0">
+      <div class="card recent-sales overflow-auto">
+        <div class="card-body">
+          <div class="row">
+            <div class="col-md-9">
+              <h5 class="card-title">Result</h5>
+            </div>
+            <div class="col-md-3 text-end mt-3">
+              <button class="btn btn-primary btn-sm" (click)="exportToExcel_for_CAMPUS_RES()">Excel</button>
+            </div>
+          </div>
+          <table id="vg_data_id" class="table table-border datatable" datatable [dtOptions]="campus_info">
+            <thead>
+              <tr>
+                <th scope="col">S.No</th>
+                <th scope="col">Campus</th>
+                <th scope="col">Course</th>
+                <th scope="col">Suc</th>
+                <th scope="col">Student Name</th>
+                <th scope="col">Status</th>
+                <th scope="col">Questions</th>
+                <th scope="col">Score</th>
+                <th scope="col">Max</th>
+                <!-- <th scope="col">View</th>
+                  <th scope="col">Update</th> -->
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let x of finalCmpData; let i=index">
+                <td scope="row">{{i+1}}</td>
+                <td>{{x.Campus}}</td>
+                <td>{{x.Course}}</td>
+                <td>{{x.Suc}}</td>
+                <td> {{x.StdName}}</td>
+                <td style="text-wrap: nowrap;" [ngStyle]="{ 'color': getExamStatusColor(x.ExamStatus) }">
+                  {{x.ExamStatus}}</td>
+                <td>{{x.QuestionCount}}</td>
+                <td>{{x.TotalScore}}</td>
+                <td>{{x.maxScore}}</td>
+                <!-- <td> <button *ngIf="x.ExamStatus === 'Completed'" (click)="gotoresult(x)"
+                      class="btn btn-success btn-sm">View</button> </td>
+                  <td class="text-center"><i *ngIf="x.ExamStatus === 'Completed'" (click)="status_update(x)"
+                      class="bx bx-refresh text-primary pointer-class" style="font-size: 25px;"></i> </td> -->
+              </tr>
+            </tbody>
+          </table>
+          <h5 *ngIf="finalCmpData.length==0 && view_table_result==1" class="text-danger text-center">No Data Found</h5>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>

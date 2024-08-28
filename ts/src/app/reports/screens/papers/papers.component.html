@@ -1,0 +1,166 @@
+<main id="main" class="main">
+    <!-- <div class="pagetitle">
+        <nav>
+            <ol class="breadcrumb m-0 p-0">
+                <li class="breadcrumb-item m-0 p-0"><a href="index.html">Dashboard</a></li>
+                <li class="breadcrumb-item active m-0 p-0">Papers</li>
+            </ol>
+        </nav>
+    </div> -->
+    <!-- End Page Title -->
+    <section class="section dashboard">
+
+        <div class="row">
+            <!-- Left side columns -->
+            <div class="col-12">
+                <div class="card">
+
+                    <div class="card-body">
+                        <div class="filter">
+                            <form class="search-form d-flex align-items-center gap-3">
+
+                                <select id="campusname" class="form-select" name="campusname" [(ngModel)]="campusname"
+                                    (change)="selectcampus(campusname)">
+                                    <option value="All" selected="selected">All</option>
+                                    <option *ngFor="let c of branchlistData">{{c._id}}</option>
+                                </select>
+
+                                <input type="text" id="text" class="form-control" name="filtertext"
+                                    [(ngModel)]="searchText" (keyup)="searchdatafilter(searchText)"
+                                    title="Enter search keyword" placeholder="Search here....!"
+                                    style="margin-right:  20px" />
+                            </form>
+                        </div>
+
+                        <h5 class="card-title">Exam Papers <span>| Today</span></h5>
+                        <table class="table table-borderless datatable">
+                            <thead>
+                                <tr>
+                                    <th scope="col">#</th>
+                                    <th scope="col">Papercode</th>
+                                    <th scope="col">Campus</th>
+                                    <th style="text-align:center">Add</th>
+                                    <th style="text-align:center">View</th>
+                                    <th style="text-align:center">PPT</th>
+                                    <th style="text-align:center">Question Paper</th>
+                                </tr>
+                            </thead>
+                            <tbody *ngFor="let x of paperslist | filter:filtertext; let i=index">
+                                <tr>
+                                    <td>{{i+1}}</td>
+                                    <td>
+                                        {{x.papercode}}&nbsp;<a href="#management/questionpaper/{{x.papercode}}" title="Question Paper"><i class="bi bi-envelope-paper-fill" ></i></a>
+                                        <a href="#management/hintspaper/{{x.papercode}}" title="Hints & Solutions"><i class="bi bi-paperclip"></i></a>
+                                    </td>
+                                    <td>{{x.branch}}</td>
+                                    <td align="center"><a href="#/management/schedule/{{x.papercode}}/null"><i
+                                                class="bx bxs-plus-square fs-5"></i></a>
+                                    </td>
+
+
+                                    <td align="center"><a href="#/management/schedulelist/{{x.papercode}}"><i
+                                                class="bi bi-eye-fill"></i></a></td>
+
+                                    <td align="center"><i class="bi bi-filetype-ppt" data-bs-toggle="modal"
+                                            data-bs-target="#pptdialog" (click)="ppt_dialog(x.papercode)"></i>
+                                    </td>
+
+
+                                    <td align="center">
+                                        <i class="bi bi-file-earmark-pdf" style="cursor: pointer;"
+                                            title="Question Paper"
+                                            (click)="download_questionpaper(x.papercode,'question_paper')"></i>
+                                        &nbsp;&nbsp;
+                                        <i class="bi bi-file-earmark-pdf" style="cursor: pointer;"
+                                            title="Hints & Solutions"
+                                            (click)="download_questionpaper(x.papercode,'hints')"></i>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <nav aria-label="...">
+                        <ul class="pagination d-flex justify-content-center">
+                            <li class="page-item" [class.disabled]="ind === 0">
+                                <a class="page-link" href="javascript:void(0);" aria-label="Previous"
+                                    (click)="limittoprev(ind-1,start,end)">
+                                    <span aria-hidden="true">&laquo;</span>
+                                </a>
+                            </li>
+                            <li class="page-item" [class.disabled]="currentPage === 1">
+                                <a class="page-link" href="javascript:void(0);" tabindex="-1"
+                                    (click)="onPageChange(currentPage - 1)">Previous</a>
+                            </li>
+                            <li class="page-item" *ngFor="let page of pages | slice:start:end"
+                                [class.active]="currentPage === page"><a class="page-link" href="javascript:void(0);"
+                                    (click)="onPageChange(page)">{{ page }}</a></li>
+                            <li class="page-item" [class.disabled]="currentPage === totalPages">
+                                <a class="page-link" href="javascript:void(0);"
+                                    (click)="onPageChange(currentPage + 1)">Next</a>
+                            </li>
+                            <!-- {{currentPage}}=========
+                              {{ind}}==={{start}}---{{end}} -->
+                            <li class="page-item" [class.disabled]="ind === 4">
+                                <a class="page-link" href="javascript:void(0);" aria-label="Next"
+                                    (click)="limittos(ind+1,start,end)">
+                                    <span aria-hidden="true">&raquo;</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </nav>
+                </div>
+
+
+                <div class="modal fade" id="pptdialog" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+                    aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="staticBackdropLabel">Subject Wise Download PPT File</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                    aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+
+                                <!-- <form [formGroup]="pptform" (ngSubmit)="onSubmit()"> -->
+                                <div class="row g-3">
+                                    <div class="col-md-6">
+                                        <label for="inputText" class="col-form-label">Papercode</label>
+                                        <input type="text" class="form-control" [(ngModel)]="selectpapercode">
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label for="inputText" class="col-form-label">Subject</label>
+                                        <select class="form-select" [(ngModel)]="selectsubject"
+                                            (ngModelChange)="selectingsub(selectsubject)">
+                                            <option *ngFor="let c of unisubjects">{{c}}</option>
+                                        </select>
+                                    </div>
+
+                                </div>
+                                <!-- </form> -->
+
+
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-danger"
+                                    (click)="download_ppt(selectpapercode,selectsubject)">Download PPT</button>
+                                <button type="button" class="btn btn-secondary"
+                                    (click)="downoad_ppthints(selectpapercode,selectsubject)">Download PPT
+                                    hints</button>
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"
+                                    aria-label="Close" (click)="videoform(selectpapercode,selectsubject)">Video
+                                    Form</button>
+                                <button type="button" class="btn btn-secondary"
+                                    (click)="download_videolist(selectpapercode,selectsubject)">Download Video
+                                    List</button>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+            </div>
+        </div>
+    </section>
+</main>

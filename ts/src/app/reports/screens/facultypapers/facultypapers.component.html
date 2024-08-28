@@ -1,0 +1,172 @@
+<main id="main" class="main">
+    <section class="section dashboard">
+        <div class="row">
+            <!-- Left side columns -->
+            <div class="col-12">
+                <div class="row">
+
+
+                    <!-- End Customers Card -->
+                    <div class="col-xxl-12 col-md-12">
+                        <div class="card recent-sales overflow-auto">
+                            <div class="card-body">
+                                <div class="hstack gap-3">
+                                    <h5 class="card-title">Faculty Papers<span>| Today</span></h5>
+                                    <form class="search-form d-flex align-items-center gap-3 ms-auto">
+                                        <!-- <select id="campusname" class="form-select" name="campusname" [(ngModel)]="campusname"
+                        (change)="selectcampus(campusname)">
+                        <option value="All" selected="selected">All</option>
+                        <option *ngFor="let c of branchlistData" [ngValue]="c._id" [selected]="c._id==campusname">
+                          {{c._id}}</option>
+                      </select> -->
+                                        <input type="text" id="text" class="form-control flex-grow-1" name="filtertext"
+                                            [(ngModel)]="searchText" (keyup)="searchdatafilter(searchText)"
+                                            title="Enter search keyword" placeholder="Search....!" />
+                                    </form>
+                                    <button type="button" class="btn btn-primary" (click)="gotosetpaper()">Create
+                                        Paper</button>
+                                    <!-- <button type="button" class="btn btn-warning" style="color: aliceblue;"><a
+                                            href="#/reports/createmanual">Manual Question Paper</a></button> -->
+                                </div>
+                                <!-- {{totalItems}}--{{start}}--{{end}}--{{ind}} -->
+                                <table class="table table-bordered datatable cstm-table">
+                                    <thead>
+                                        <tr>
+                                            <th scope="col">#</th>
+                                            <th scope="col">Title</th>
+                                            <th scope="col">Uid</th>
+                                            <th scope="col">Ques</th>
+                                            <th scope="col">CreateDate</th>
+                                            <th scope="col">Actions</th>
+
+
+                                        </tr>
+                                    </thead>
+                                    <tbody *ngFor="let x of templateslist | filter:filtertext; let i=index">
+                                        <tr>
+                                            <th scope="row"><a href="#">{{i+1}}</a></th>
+                                            <td>{{x.templatename}}</td>
+                                            <td>{{x.uid}} &nbsp; </td>
+                                            <td>{{x.questions.length}} &nbsp; </td>
+                                            <td>
+                                                <div class="text-primary opacity-75 hstack gap-3 timebar">
+                                                    <span>
+                                                        <img src="assets/img/calendar.svg"
+                                                            class="timebar-cal">&nspar;{{x.createdAt | date:'yyyy-MM-dd
+                                                        h:m:a' }}
+                                                    </span>
+                                                </div>
+                                            </td>
+                                            <td scope="col" class="text-start">
+                                                <div class="d-flex justify-content-between align-items-center">
+                                                    <i class="bi bi-info-circle" data-bs-toggle="modal"
+                                                        data-bs-target="#details" (click)="showdetails(x.uid)"></i>
+                                                    <a href="#/facultypaper/{{x.uid}}"><i class="bi bi-eye"></i> </a>
+                                                </div>
+                                            </td>
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+
+
+                            <nav aria-label="..." *ngIf="templateslist!=''">
+                                <ul class="pagination d-flex justify-content-center mb-5">
+                                    <li class="page-item" [class.disabled]="ind === 0"> <a class="page-link"
+                                            href="javascript:void(0);" aria-label="Previous"
+                                            (click)="limittoprev(ind-1,start,end)"> <span
+                                                aria-hidden="true">&laquo;</span> </a> </li>
+                                    <li class="page-item" [class.disabled]="currentPage === 1"> <a class="page-link"
+                                            href="javascript:void(0);" tabindex="-1"
+                                            (click)="onPageChange(currentPage - 1)">Previous</a>
+                                    </li>
+                                    <li class="page-item" *ngFor="let page of pages | slice:start:end"
+                                        [class.active]="currentPage === page"><a class="page-link"
+                                            href="javascript:void(0);" (click)="onPageChange(page)">{{ page }}</a></li>
+                                    <li class="page-item" [class.disabled]="currentPage === totalPages"> <a
+                                            class="page-link" href="javascript:void(0);"
+                                            (click)="onPageChange(currentPage + 1)">Next</a> </li>
+                                    <!-- {{currentPage}}=========
+                                  {{ind}}==={{start}}---{{end}} -->
+                                    <li class="page-item" [class.disabled]="ind === 4"> <a class="page-link"
+                                            href="javascript:void(0);" aria-label="Next"
+                                            (click)="limittos(ind+1,start,end)"> <span aria-hidden="true">&raquo;</span>
+                                        </a> </li>
+                                </ul>
+                            </nav>
+
+
+                        </div>
+                    </div>
+                    <!-- End Recent Sales -->
+                </div>
+            </div>
+            <!-- End Left side columns -->
+
+
+
+
+            <div class="modal fade" id="details" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h1 class="modal-title fs-5" id="exampleModalLabel">Questions Summary</h1>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">#</th>
+                                        <th scope="col">Subject</th>
+                                        <th scope="col">Topic</th>
+                                        <th scope="col">QType</th>
+                                        <th scope="row">Easy</th>
+                                        <th scope="row">Average</th>
+                                        <th scope="row">Difficulty</th>
+                                        <th scope="row">Very Diffi</th>
+                                        <th scope="row">Total</th>
+                                    </tr>
+                                </thead>
+                                <tbody *ngFor="let x of formateddata; let i=index">
+                                    <tr *ngIf="x.TotalQues!=0">
+                                        <td>{{i+1}}</td>
+                                        <td>{{x.Subject}}</td>
+                                        <td>{{x.TopicName}}</td>
+                                        <!-- <td *ngIf="formateddata[i - 1]?.Subject !== formateddata[i]?.Subject; else elseBlock">{{x.Subject}}</td>
+                                    <ng-template #elseBlock>
+                                        <td> </td>
+                                      </ng-template>
+                                    <td *ngIf="formateddata[i - 1]?.TopicName !== formateddata[i]?.TopicName;  else elseBlock2">{{x.TopicName}}</td>
+                                    <ng-template #elseBlock2>
+                                        <td> </td>
+                                      </ng-template> -->
+                                        <td>{{x.qtype}}</td>
+                                        <td>{{x.Easy}}</td>
+                                        <td>{{x.Average}}</td>
+                                        <td>{{x.Diff}}</td>
+                                        <td>{{x.VeryDiff}}</td>
+                                        <td>{{x.TotalQues}}</td>
+
+
+                                    </tr>
+
+                                </tbody>
+                                <tr>
+                                    <th colspan="8" class="text-center">Total</th>
+                                    <th>{{totalques}}</th>
+                                </tr>
+                            </table>
+
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+            
+
+        </div>
+    </section>
+</main>

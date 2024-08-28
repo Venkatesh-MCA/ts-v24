@@ -1,0 +1,293 @@
+<main id="main" class="main">
+   <!-- <div class="pagetitle">
+      <nav>
+         <ol class="breadcrumb m-0 p-0">
+            <li class="breadcrumb-item m-0 p-0"><a href="#/management/dashboard">Dashboard</a></li>
+            <li class="breadcrumb-item m-0 p-0"><a href="#/management/papers">Papers</a></li>
+            <li class="breadcrumb-item active m-0 p-0">{{mongoID=='null' ? 'Create' : 'Update'}} Schedule</li>
+         </ol>
+      </nav>
+   </div> -->
+   
+   <section class="section dashboard" *ngIf="updateform==false">
+      <div class="card card-body" style="padding-top:20px">
+
+         <form [formGroup]="addscheduleform" (ngSubmit)="onSubmit(updateform)">
+            <div class="row g-3">
+               <div class="col-md-6">
+                  <label for="inputText" class="col-form-label">Papercode</label>
+                  <input type="text" class="form-control" formControlName="papercode" [readonly]="isDisabled">
+               </div>
+
+
+               <div class="col-md-6">
+                  <label for="inputEmail" class="col-form-label">Exam Title</label>
+                  <input type="text" class="form-control" formControlName="examtitle"
+                     [ngClass]="{ 'is-invalid': submitted && addscheduleform.get('examtitle')?.errors }">
+                  <div *ngIf="submitted && f['examtitle'].errors" class="invalid-feedback">
+                     <div *ngIf="f['examtitle'].errors['required']">Examtitle is required</div>
+                  </div>
+               </div>
+
+
+
+               <div class="col-md-6">
+                  <label for="inputDate" class="col-form-label">Exam Start Date</label>
+                  <input type="date" class="form-control" formControlName="examstartdate"
+                     [ngClass]="{ 'is-invalid': submitted && addscheduleform.get('examstartdate')?.errors }">
+                  <div *ngIf="submitted && f['examstartdate'].errors" class="invalid-feedback">
+                     <div *ngIf="f['examstartdate'].errors['required']">Exam Startdate is required</div>
+                  </div>
+               </div>
+
+
+
+               <div class="col-md-6">
+                  <label for="inputTime" class="col-form-label">Exam Start Time</label>
+                  <input type="time" class="form-control" formControlName="examstarttime"
+                     [ngClass]="{ 'is-invalid': submitted && addscheduleform.get('examstarttime')?.errors }">
+                  <div *ngIf="submitted && f['examstarttime'].errors" class="invalid-feedback">
+                     <div *ngIf="f['examstarttime'].errors['required']">Exam starttime is required</div>
+                  </div>
+               </div>
+
+
+
+               <div class="col-md-6">
+                  <label for="inputDate" class="col-form-label">Exam End Date</label>
+                  <input type="date" class="form-control" formControlName="examenddate"
+                     [ngClass]="{ 'is-invalid': submitted && addscheduleform.get('examenddate')?.errors }">
+                  <div *ngIf="submitted && f['examenddate'].errors" class="invalid-feedback">
+                     <div *ngIf="f['examenddate'].errors['required']">Exam enddate is required</div>
+                  </div>
+               </div>
+
+
+
+               <div class="col-md-6">
+                  <label for="inputTime" class="col-form-label">Exam End Time</label>
+                  <input type="time" class="form-control" formControlName="examendtime"
+                     [ngClass]="{ 'is-invalid': submitted && addscheduleform.get('examendtime')?.errors }">
+                  <div *ngIf="submitted && f['examendtime'].errors" class="invalid-feedback">
+                     <div *ngIf="f['examendtime'].errors['required']">Exam endtime is required</div>
+                  </div>
+               </div>
+
+
+
+               <div class="col-md-6">
+                  <label for="inputNumber" class="col-form-label">Duration</label>
+                  <input type="number" class="form-control" formControlName="duration" placeholder="Minutes"
+                     [ngClass]="{ 'is-invalid': submitted && addscheduleform.get('duration')?.errors }">
+                  <div *ngIf="submitted && f['duration'].errors" class="invalid-feedback">
+                     <div *ngIf="f['duration'].errors['required']">Duration is required</div>
+                  </div>
+               </div>
+
+
+
+               <div class="col-md-6">
+
+
+                  <aside class="hstack gap-3  justify-content-between" style="margin-top: 29px">
+                     <div class="form-check d-flex align-items-center gap-1 mt-3">
+                        <input class="form-check-input" type="checkbox" formControlName="randomquestions">
+                        <label class="form-check-label" for="gridRadios1">
+                           Random Questions
+                        </label>
+                     </div>
+                     <div class="form-check d-flex gap-1 align-items-center">
+
+                        <input class="form-check-input" type="checkbox" formControlName="resultdisplay">
+                        <label class="form-check-label" for="gridRadios1">
+                           Result Display
+                        </label>
+
+                     </div>
+
+
+                     <div class="form-check d-flex gap-1 align-items-center">
+                        <input class="form-check-input" type="checkbox" formControlName="ipbasedexam">
+                        <label class="form-check-label" for="gridRadios1">
+                           Ip Based Exam
+                        </label>
+                     </div>
+
+
+
+                  </aside>
+
+               </div>
+
+               <div class="col-md-6">
+                  <label for="inputState" class="form-label">Institute</label>{{selectedinst}}
+                  <select  class="form-control" id="selectedinst"  formControlName="selectedinst" (change)="showvirtualgroups($event)"  >                  
+                  <option value="1">SXHOOL</option>
+                  <option value="2">JUNIOR</option>  					    
+                  <option value="3">DEGREE</option>
+                  <option value="4">COMPETITIVE</option>
+                   <option value="5">PG</option>
+                   </select>
+                </div>
+               <div class="col-md-6">
+                  <label class="col-form-label">Virtual Groups</label>
+                  <select class="form-select" multiple="" aria-label="multiple select example" formControlName="groups"
+                     [ngClass]="{ 'is-invalid': submitted && addscheduleform.get('groups')?.errors }">
+                     <option selected="">Select Virtual Group</option>
+                     <option *ngFor="let x of virtualgroups" value="{{x.vgroupId}}">{{x.virtual_group_name}}</option>
+                  </select>
+                  <div *ngIf="submitted && f['groups'].errors" class="invalid-feedback">
+                     <div *ngIf="f['groups'].errors['required']">Virtual Group is required</div>
+                  </div>
+               </div>
+
+
+
+
+               <div class="col-sm-12 text-center">
+                  <button type="submit" class="btn btn-primary" >Create Schedule</button>
+               </div>
+               
+            </div>
+         </form>
+
+      </div>
+   </section>
+
+   <section class="section dashboard" *ngIf="updateform==true && scheduleview!=null">
+      <div class="card card-body" style="padding-top:20px">
+
+         <form [formGroup]="updatesheduleform" (ngSubmit)="onSubmit(updateform)">
+            <div class="row g-3"> 
+               <div class="col-md-6">
+                  <label for="inputText" class="col-form-label">Papercode</label> 
+                  <input type="text" class="form-control"   formControlName="papercode" 
+                  [readonly]="isDisabled">
+               </div>
+
+
+               <div class="col-md-6">
+                  <label for="inputEmail" class="col-form-label">Exam Title</label>
+                  <input type="text" class="form-control" formControlName="examtitle"
+                     [ngClass]="{ 'is-invalid': submitted && updatesheduleform.get('examtitle')?.errors }">
+                  <div *ngIf="submitted && g['examtitle'].errors" class="invalid-feedback">
+                     <div *ngIf="g['examtitle'].errors['required']">Examtitle is required</div>
+                  </div>
+
+                  
+               </div>
+
+
+
+               <div class="col-md-6">
+                  <label for="inputDate" class="col-form-label">Exam Start Date</label>
+                  <input type="date" class="form-control" formControlName="examstartdate"
+                     [ngClass]="{ 'is-invalid': submitted && updatesheduleform.get('examstartdate')?.errors }">
+                  <div *ngIf="submitted && g['examstartdate'].errors" class="invalid-feedback">
+                     <div *ngIf="g['examstartdate'].errors['required']">Exam Startdate is required</div>
+                  </div>
+               </div>
+
+
+
+               <div class="col-md-6">
+                  <label for="inputTime" class="col-form-label">Exam Start Time</label>
+                  <input type="time" class="form-control" formControlName="examstarttime"
+                     [ngClass]="{ 'is-invalid': submitted && updatesheduleform.get('examstarttime')?.errors }">
+                  <div *ngIf="submitted && g['examstarttime'].errors" class="invalid-feedback">
+                     <div *ngIf="g['examstarttime'].errors['required']">Exam starttime is required</div>
+                  </div>
+               </div>
+
+
+
+               <div class="col-md-6">
+                  <label for="inputDate" class="col-form-label">Exam End Date</label>
+                  <input type="date" class="form-control" formControlName="examenddate"
+                     [ngClass]="{ 'is-invalid': submitted && updatesheduleform.get('examenddate')?.errors }">
+                  <div *ngIf="submitted && g['examenddate'].errors" class="invalid-feedback">
+                     <div *ngIf="g['examenddate'].errors['required']">Exam enddate is required</div>
+                  </div>
+               </div>
+
+
+
+               <div class="col-md-6">
+                  <label for="inputTime" class="col-form-label">Exam End Time</label>
+                  <input type="time" class="form-control" formControlName="examendtime"
+                     [ngClass]="{ 'is-invalid': submitted && updatesheduleform.get('examendtime')?.errors }">
+                  <div *ngIf="submitted && g['examendtime'].errors" class="invalid-feedback">
+                     <div *ngIf="g['examendtime'].errors['required']">Exam endtime is required</div>
+                  </div>
+               </div>
+
+
+
+               <div class="col-md-6">
+                  <label for="inputNumber" class="col-form-label">Duration</label>
+                  <input type="number" class="form-control" formControlName="duration" placeholder="Minutes"
+                     [ngClass]="{ 'is-invalid': submitted && updatesheduleform.get('duration')?.errors }">
+                  <div *ngIf="submitted && g['duration'].errors" class="invalid-feedback">
+                     <div *ngIf="g['duration'].errors['required']">Duration is required</div>
+                  </div>
+               </div>
+
+
+
+               <div class="col-md-6">
+
+
+                  <aside class="hstack gap-3  justify-content-between" style="margin-top: 29px">
+                     <div class="form-check d-flex align-items-center gap-1 mt-3">
+                        <input class="form-check-input" type="checkbox" formControlName="randomquestions">
+                        <label class="form-check-label" for="gridRadios1">
+                           Random Questions
+                        </label>
+                     </div>
+                     <div class="form-check d-flex gap-1 align-items-center">
+
+                        <input class="form-check-input" type="checkbox" formControlName="resultdisplay">
+                        <label class="form-check-label" for="gridRadios1">
+                           Result Display
+                        </label>
+
+                     </div>
+
+
+                     <div class="form-check d-flex gap-1 align-items-center">
+                        <input class="form-check-input" type="checkbox" formControlName="ipbasedexam">
+                        <label class="form-check-label" for="gridRadios1">
+                           Ip Based Exam
+                        </label>
+                     </div>
+
+
+
+                  </aside>
+
+               </div>
+               <div class="col-md-12">
+                  <label class="col-form-label">Virtual Groups</label>
+                  <select class="form-select" multiple="" aria-label="multiple select example" formControlName="groups"
+                     [ngClass]="{ 'is-invalid': submitted && updatesheduleform.get('groups')?.errors }">
+                     <option selected="">Open this select menu</option>
+                     <option *ngFor="let x of virtualgroups" value="{{x.vgroupId}}">{{x.virtual_group_name}}</option>
+                  </select>
+                  <div *ngIf="submitted && g['groups'].errors" class="invalid-feedback">
+                     <div *ngIf="g['groups'].errors['required']">Virtual Group is required</div>
+                  </div>
+               </div>
+
+
+
+
+               <div class="col-sm-12 text-center">
+                  <button type="submit" class="btn btn-primary" [disabled]="updatesheduleform.invalid" >Update Schedule</button>
+               </div>
+              
+            </div>
+         </form>
+
+      </div>
+   </section>
+</main>

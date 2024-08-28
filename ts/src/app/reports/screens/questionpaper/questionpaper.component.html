@@ -1,0 +1,187 @@
+<main id="main" class="main">
+
+    <div class="card">
+        <div class="card-body">
+            <div class="row dashboard">
+                <div class="d-flex justify-content-between align-items-center">
+                    <table width=100%>
+                        <tr>
+                            <td>
+                                <img [src]="setheaderimage"
+                                    class="test" style="width:100%;margin-bottom:10px;display: block" />
+                            </td>
+                        </tr>
+                        <thead>
+                            <tr>
+                                <td>
+                                    <div class="page-header-space"></div>
+                                </td>
+                            </tr>
+                        </thead>
+                        <tbody>
+
+                            <tr>
+                                <td>
+                                    <table style="width:100%" cellpadding="0" class="table-pading" border="1"
+                                        cellspacing="0" style="font-size:12px;" *ngIf="maindata">
+                                        <thead>
+                                            <tr >
+                                                <td colspan="8">
+                                                   <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                                                      <tr>
+                                                         <td style="float:left;font-weight:bold;">{{maindata[0].program_master_name}}</td>
+                                                         <td  align="center">&nbsp;</td>
+                                                         <td style="float:right;font-weight:bold;">DT : {{maindata[0].exam_date | date :  "dd-MM-yyyy"}}</td>
+                                                      </tr>
+                                                      <tr>
+                                                         <td style="float:left;font-weight:bold;">Time : 
+                                                         <!-- {{maindata.exam_duration/60}} Hours -->
+                                                         {{timeConvert(maindata[0].exam_duration)}}
+                                                         </td>
+                                                         <td align="center"><b>
+                                                            {{maindata[0].paper_title}}
+                                                            </b>
+                                                         </td>
+                                                         <td>
+                                                            <span  style="float:right;font-weight:bold;"> Max.Marks : {{maindata[0].exam_maxmarks}} </span>
+                                                         </td>
+                                                      </tr>
+                                                   </table>
+                                                </td>
+                                             </tr>
+                                            <tr>
+                                                <th style="text-align:center">S.No</th>
+                                                <th style="text-align:center">SECTION</th>
+                                                <th style="text-align:center">TYPE OF QUESTIONS</th>
+                                                <th style="text-align:center">
+                                                    <div>No.of</div>
+                                                    <div>Questions</div>
+                                                </th>
+                                                <th style="text-align:center">(+VE) MARKS</th>
+                                                <th style="text-align:center">(-VE) MARKS</th>
+                                                <th style="text-align:center" *ngIf="maindata.program_master_name=='JEE ADV'">PARTIAL MARKS</th>
+                                                <th style="text-align:center">EACH SECTION MARKS</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr align="center" *ngFor="let x of schemaInfo; let i=index">
+                                                <td>{{i+1}}</td>
+                                                <td>{{rromanize(i+1)}}</td>
+                                                <td style="white-space: nowrap;">{{x.typeName}}</td>
+                                                <td style="white-space: nowrap;">{{x.qcount}}</td>
+                                                <td style="white-space: nowrap;">{{x.positive}}</td>
+                                                <td style="white-space: nowrap;">{{x.nagetive}}</td>                                                
+                                                <td style="white-space: nowrap;" *ngIf="maindata.program_master_name=='JEE ADV'">{{x.partial}}</td>
+                                                <td style="white-space: nowrap;">{{(1*x.qcount)*(1*x.positive)}}</td>
+                                            </tr>
+                                        </tbody>
+                                        <tr align="center">
+                                            <th style="text-align:center" colspan="3">Total Questions</th>
+                                            <th style="text-align:center">{{totalqcount}}
+                                            </th>
+                                            <th style="text-align:center" colspan="2">Total Marks</th>
+                                            <th style="text-align:center" colspan="1" *ngIf="maindata.program_master_name==='JEE ADV'">Total Marks</th>
+                                            <th style="text-align:center">{{maxMrks}}</th>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="8" *ngIf="maindata.program_master_name=='JEE MAINS'">
+                                                <b>*</b> This section contains 10 Numerical Value Questions in each
+                                                subject. Student has to Answer any 5 only out of 10 questions.
+                                                <br />
+                                                <b>*</b> If not attempted no mark and no deduction will be made. The
+                                                answer should be rounded off to the nearest integer.
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <table *ngFor="let x of qpaper;let i = index" width="100%">
+                                        <tr
+                                            *ngIf="qpaper[i - 1]?.subject_master_name !== qpaper[i]?.subject_master_name">
+                                            <td>
+                                                <h4 style="text-align:center;margin-top: 20px;margin-bottom:-10px;">
+                                                    {{x.subject_master_name}}</h4>
+                                            </td>
+                                        </tr>
+                                        <tr
+                                            *ngIf="qpaper[i - 1]?.question_master_type !== qpaper[i]?.question_master_type">
+                                            <td style="text-align:center">
+                                                <h4
+                                                    style="text-align: left;background-color: #cccc;padding: 5px 30px;margin-bottom: 20px;text-align: center">
+                                                    SECTION&nbsp;-&nbsp;{{getsection(qpaper[i].question_master_type)+1}}
+                                                </h4>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td style="padding-right: 30px;">
+                                                <section style="position: relative;" class="quesBreak">
+                                                    <div style="word-wrap: break-word; padding-left:70px;" [appMathJax]="x.question_master_desc" >
+                                                        {{x.question_master_desc}}
+
+                                                    </div>
+                                                    <div class="numberbg" style="position:absolute;top:0;">{{i+1}}</div>
+                                                </section>
+
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td class="printPdng" style="border:0px yellow solid">
+                                                <ul *ngIf="x.question_master_type != 4 && x.question_master_type != 12"
+                                                    style="display:flex;justify-content:space-between;align-items: center;flex-wrap: wrap;color: #444444!important; width:100%; padding-left: 15px;row-gap: 5px;margin:0px;">
+                                                    <span *ngIf="x.Maxlen>=50">
+                                                        <li *ngFor="let y of x.ans ; let j=index;"
+                                                            style="list-style:none;margin-bottom:0;min-width:372px;border:0px red  solid;">
+                                                            <div style="display:flex;gap:5px;">
+                                                                <span
+                                                                    style="font-weight:bold;align-self: start">{{j+1}}</span>
+                                                                <span style="align-self: start" [appMathJax]="y.answer_master_desc" >{{y.answer_master_desc}}
+                                                                </span>
+                                                            </div>
+                                                        </li>
+                                                    </span>
+                                                    <span *ngIf="x.Maxlen>=15 && x.Maxlen<50">
+                                                        <li *ngFor="let y of x.ans ; let j=index"
+                                                            style="list-style:none;margin-bottom:0;width:calc(50vw - 45px);border:0px #000 solid;justify-items: stretch;">
+                                                            <div style="display:flex;gap:5px;" >
+                                                                <span
+                                                                    style="font-weight:bold;align-self: start">{{j+1}}</span>
+                                                                <span
+                                                                    style="align-self: start" [appMathJax]="y.answer_master_desc" >{{y.answer_master_desc}}</span>
+                                                            </div>
+                                                        </li>
+                                                    </span>
+                                                    <span *ngIf="x.Maxlen<15">
+                                                        <li *ngFor="let y of x.ans ; let j=index"
+                                                            style="list-style:none;margin-bottom:0;min-width: 140px;border:0px yelllow solid;">
+                                                            <div style="display:flex;gap:5px;">
+                                                                <span
+                                                                    style="font-weight:bold;align-self: start">{{j+1}}</span>
+                                                                <span style="align-self: start" [appMathJax]="y.answer_master_desc" >
+                                                                    {{y.answer_master_desc}}</span>
+                                                            </div>
+                                                        </li>
+                                                    </span>
+                                                </ul>
+                                                <!-- <div style="opacity:0;height:4px;">test-{{x.Maxlen}} </div> -->
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </td>
+                            </tr>
+                        </tbody>
+                        <tfoot>
+                            <tr>
+                                <td>
+                                    <div class="page-footer-space"></div>
+                                </td>
+                            </tr>
+                        </tfoot>
+                    </table>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</main>

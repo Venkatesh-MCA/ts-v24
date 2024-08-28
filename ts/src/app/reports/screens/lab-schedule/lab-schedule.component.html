@@ -1,0 +1,390 @@
+<main id="main" class="main">
+    <section class="section dashboard card card-body">
+        <div class="row">
+            <div class="col-md-2">
+                <h5 class="card-title"> Exam Schedule </h5>
+            </div>
+            <div class="col-md-6 text-end mt-3">
+                <!-- <button class="btn btn-p rimary btn-sm" onclick="history.back()">Back</button> -->
+            </div>
+            <div class="col-md-4 mt-2 text-end">
+                <input type="text" class="form-control" (keyup)="search_function($event)" placeholder="Search Here..!">
+                &nbsp;
+                <button [ngClass]="show_live==0?'btn btn-success btn-sm mt-2 mb-2':'btn btn-secondary btn-sm mt-2 mb-2'"
+                    (click)="closedList(1,0)">Live</button> &nbsp;
+                <button [ngClass]="show_live==1?'btn btn-success btn-sm mt-2 mb-2':'btn btn-secondary btn-sm mt-2 mb-2'"
+                    (click)="closedList(2,1)">Closed</button>
+            </div>
+        </div>
+        <div class="dashboard">
+            <div class="recent-sales">
+                <table class="table table-bordered datatable cstm-table vtop"
+                    *ngIf="show_live==0 && live_schedule_list.length>0">
+                    <thead>
+                        <tr>
+                            <th scope="col" style="font-weight:600;">#</th>
+                            <th scope="col" style="font-weight:600;">Papercode</th>
+                            <th scope="col" style="font-weight:600;">Description</th>
+                            <th scope="col" style="font-weight:600;">Scheduled Date</th>
+                            <th scope="col" style="font-weight:600;">Campus</th>
+                            <th scope="col" style="font-weight:100;" class="text-center  fw-lighter">
+                                <i class="bi bi-people text-primary" title="Strength" style="font-size:19px;"></i>
+                            </th>
+                            <th scope="col" class="text-center fw-lighter">
+                                <img src="assets/img/exams indication dots/Completed.png" alt="" title="Completed"
+                                    width="20">
+                            </th>
+                            <th scope="col" class="text-center fw-lighter">
+                                <img src="assets/img/exams indication dots/Continue.png" alt="" title="Continue"
+                                    width="20">
+                            </th>
+                            <th scope="col" class="text-center fw-lighter">
+                                <img src="assets/img/exams indication dots/NotStarted.png" alt="" title="NotStarted"
+                                    width="20">
+                            </th>
+                            <th scope="col" class="text-center">
+                                <i class="bi bi-mortarboard text-primary" title="Result" style="font-size: 16px;"></i>
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let x of live_schedule_list; let i=index">
+                            <th scope="row">{{i+1}}</th>
+                            <td>{{x.PaperCode}} &nbsp; </td>
+                            <td>
+                                <article class="hstack justify-content-between gap-3">
+                                    <div class="card-hdng-small d-flex flex-column">
+                                        {{ x.PaperInfo[0].papername }}
+                                        <div class="d-flex gap-2 align-items-start flex-row">
+                                            <span class="text-muted small text-nowrap" *ngFor="let info of x.PaperInfo">
+                                                <span class="fw-bolder-2 text-dark"
+                                                    style="opacity: 0.8;">{{info.language.join(', ')}}</span>
+                                            </span>
+                                            <span class="text-muted small text-nowrap text-end">Ques: <span
+                                                    class="fw-bolder">{{x.Questions_count}}</span></span> <span
+                                                class="text-muted small text-nowrap">Score: <span
+                                                    class="fw-bolder">{{x.Score}}</span></span>
+                                        </div>
+                                    </div>
+                                </article>
+                            </td>
+                            <td>
+                                <article class="hstack justify-content-between gap-3">
+                                    <div class="text-primary opacity-75 hstack gap-3 timebar">
+                                        <img src="assets/img/calendar.svg" class="timebar-cal"><span>{{x.from_date |
+                                            date}}</span><i
+                                            class="bi bi-arrow-bar-right bi bi-arrow-right fs-6 text-dark"></i><span>{{x.to_date
+                                            | date}}</span>
+                                    </div>
+                                </article>
+                                <a data-bs-toggle="modal"
+                                data-bs-target="#vgListModal" (click)="get_vg_info(x)" class="d-flex align-items-center vidoesIconsMainBlock text-primary pointer-class"><img  src="assets/img/quick-bytes.svg" class="quickBytes"><span class="text-primary">Virtual Groups</span> </a>
+                            </td>
+                            <td class="text-center" title="Campus">
+                                <article class="text-primary MoreLink" data-bs-toggle="modal"
+                                    data-bs-target="#basicModal" (click)="get_papercmp(x)">
+                                    <div style="display: block;  white-space: nowrap; overflow: hidden;  text-overflow: ellipsis;height: 22px;text-wrap: nowrap;">
+                                        <small class="small d-block fw-semibold">{{x.Campus_info[0]}}</small>
+                                    </div>
+                                    <small class="d-block" style="font-size: 11px;margin-top: -1px;opacity: 0.9;">
+                                        <span class="campusCount">+ {{x.Campus_info.length-1}}</span> More ...
+                                    </small>
+                                </article>
+
+                                <div class="modal fade" id="basicModal" tabindex="-1" aria-hidden="true"
+                                    style="display: none;">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title">Campus Wise Report</h5>
+                                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                    aria-label="Close"></button>
+                                            </div>
+                                            <div class="modal-body">
+                                                <div style="height: 65vh;overflow-y: auto;">
+                                                    <table class="table table-bordered table-sm datatable">
+                                                        <thead
+                                                            style="text-align: center;position: sticky;top: 0;text-align: left;">
+                                                            <tr>
+                                                                <th scope="col">S.No</th>
+                                                                <th scope="col">Campus</th>
+                                                                <th scope="col" style="font-weight:100;"
+                                                                    class="text-center  fw-lighter">
+                                                                    <i class="bi bi-people text-primary"
+                                                                        title="Strength" style="font-size:19px;"></i>
+                                                                </th>
+                                                                <th scope="col" class="text-center fw-lighter">
+                                                                    <img src="assets/img/exams indication dots/Completed.png"
+                                                                        alt="" title="Completed" width="20">
+                                                                </th>
+                                                                <th scope="col" class="text-center fw-lighter">
+                                                                    <img src="assets/img/exams indication dots/Continue.png"
+                                                                        alt="" title="Continue" width="20">
+                                                                </th>
+                                                                <th scope="col" class="text-center fw-lighter">
+                                                                    <img src="assets/img/exams indication dots/NotStarted.png"
+                                                                        alt="" title="NotStarted" width="20">
+                                                                </th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody style="text-align: center;">
+                                                            <tr *ngFor="let x of Paperwise_cmpList; let i=index">
+                                                                <td>{{i+1}}</td>
+                                                                <td class="text-start text-primary">
+                                                                    {{x.campus}}</td>
+                                                                <td class="text-end" title="Strength">{{x.strength}}
+                                                                </td>
+                                                                <td class="text-end" title="Completed">{{x.completed}}
+                                                                </td>
+                                                                <td class="text-end" title="Continue">{{x.continue}}
+                                                                </td>
+                                                                <td class="text-end" title="Not Strarted">
+                                                                    {{x.notstarted}}</td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-secondary"
+                                                    data-bs-dismiss="modal">Close</button>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="text-center" title="Strength"> {{x.vg_count}} <br>
+                            </td>
+                            <td class="text-center" title="Completed"> {{x.completed_count}} </td>
+                            <td class="text-center" title="Continue"> {{x.continue_count}} </td>
+                            <td class="text-center" title="NotStarted"> {{x.notstarted_count}} </td>
+                            <td scope="col" class="text-center fs-6">
+                                <i (click)="goto_scheduleresult(x)" class="bi bi-search text-primary text-center pointer-class"></i>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <table class="table table-bordered datatable cstm-table vtop"
+                    *ngIf="show_live==1 && closed_schedule_list.length>0">
+                    <thead>
+                        <tr>
+                            <th scope="col" style="font-weight:600;">#</th>
+                            <th scope="col" style="font-weight:600;">Papercode</th>
+                            <th scope="col" style="font-weight:600;">Description</th>
+                            <th scope="col" style="font-weight:600;">Scheduled Date</th>
+                            <th scope="col" style="font-weight:600;">Campus</th>
+                            <th scope="col" style="font-weight:100;" class="text-center  fw-lighter">
+                                <i class="bi bi-people text-primary" title="Strength" style="font-size:19px;"></i>
+                            </th>
+                            <th scope="col" class="text-center fw-lighter">
+                                <img src="assets/img/exams indication dots/Completed.png" alt="" title="Completed"
+                                    width="20">
+                            </th>
+                            <th scope="col" class="text-center fw-lighter">
+                                <img src="assets/img/exams indication dots/Continue.png" alt="" title="Continue"
+                                    width="20">
+                            </th>
+                            <th scope="col" class="text-center fw-lighter">
+                                <img src="assets/img/exams indication dots/NotStarted.png" alt="" title="NotStarted"
+                                    width="20">
+                            </th>
+                            <th scope="col" class="text-center">
+                                <i class="bi bi-mortarboard text-primary" title="Result" style="font-size: 16px;"></i>
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let x of closed_schedule_list; let i=index">
+                            <th scope="row">{{i+1}}</th>
+                            <td>{{x.PaperCode}} &nbsp; </td>
+                            <td>
+                                <article class="hstack justify-content-between gap-3">
+                                    <div class="card-hdng-small d-flex flex-column">
+                                        {{ x.PaperInfo[0].papername }}
+                                        <div class="d-flex gap-2 align-items-start flex-row">
+                                            <span class="text-muted small text-nowrap" *ngFor="let info of x.PaperInfo">
+                                                <span class="fw-bolder-2 text-dark"
+                                                    style="opacity: 0.8;">{{info.language.join(', ')}}</span>
+                                            </span>
+                                            <span class="text-muted small text-nowrap">Ques: <span
+                                                    class="fw-bolder">{{x.Questions_count}}</span></span> <span
+                                                class="text-muted small text-nowrap">Score: <span
+                                                    class="fw-bolder">{{x.Score}}</span></span>
+                                        </div>
+                                    </div>
+                                </article>
+                            </td>
+                            <td>
+                                <article class="hstack justify-content-between gap-3">
+                                    <div class="text-primary opacity-75 hstack gap-3 timebar">
+                                        <img src="assets/img/calendar.svg" class="timebar-cal"><span>{{x.from_date |
+                                            date}}</span><i
+                                            class="bi bi-arrow-bar-right bi bi-arrow-right fs-6 text-dark"></i><span>{{x.to_date
+                                            | date}}</span>
+                                    </div>
+                                </article>
+
+                                <a data-bs-toggle="modal"  data-bs-target="#vgListModal" (click)="get_vg_info(x)" class="d-flex align-items-center vidoesIconsMainBlock text-primary pointer-class"><img  src="assets/img/quick-bytes.svg" class="quickBytes"><span class="text-primary" >Virtual Groups</span> </a>
+                            </td>
+                            <td class="text-center" title="Campus">
+                                <article class="text-primary MoreLink" data-bs-toggle="modal"
+                                    data-bs-target="#basicModal" (click)="get_papercmp(x)">
+                                    <div style="display: block;  white-space: nowrap;  overflow: hidden;  text-overflow: ellipsis;height: 22px;text-wrap: nowrap;">
+                                        <small class="small d-block fw-semibold">{{x.Campus_info[0]}}</small>
+                                    </div>
+                                    <small class="d-block" style="font-size: 11px;margin-top: -1px;opacity: 0.9;">
+                                        <span class="campusCount">+ {{x.Campus_info.length-1}}</span> More ...
+                                    </small>
+                                </article>
+                                <div class="modal fade" id="basicModal" tabindex="-1" aria-hidden="true"
+                                    style="display: none;">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title">Campus Wise Report</h5>
+                                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                    aria-label="Close"></button>
+                                            </div>
+                                            <div class="modal-body">
+                                                <div style="height:65vh;overflow-y: auto;">
+                                                    <table class="table table-sm table-bordered datatable">
+                                                        <thead
+                                                            style="text-align: center;position: sticky;top: 0;text-align: left;">
+                                                            <tr>
+                                                                <th scope="col">S.No</th>
+                                                                <th scope="col">Campus</th>
+                                                                <th scope="col" style="font-weight:100;"
+                                                                    class="text-center  fw-lighter">
+                                                                    <i class="bi bi-people text-primary"
+                                                                        title="Strength" style="font-size:19px;"></i>
+                                                                </th>
+                                                                <th scope="col" class="text-center fw-lighter">
+                                                                    <img src="assets/img/exams indication dots/Completed.png"
+                                                                        alt="" title="Completed" width="20">
+                                                                </th>
+                                                                <th scope="col" class="text-center fw-lighter">
+                                                                    <img src="assets/img/exams indication dots/Continue.png"
+                                                                        alt="" title="Continue" width="20">
+                                                                </th>
+                                                                <th scope="col" class="text-center fw-lighter">
+                                                                    <img src="assets/img/exams indication dots/NotStarted.png"
+                                                                        alt="" title="NotStarted" width="20">
+                                                                </th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody style="text-align: center;">
+                                                            <tr *ngFor="let x of Paperwise_cmpList; let i=index">
+                                                                <td>{{i+1}}</td>
+                                                                <td class="text-start text-primary pointer-class">
+                                                                    {{x.campus}}</td>
+                                                                <td class="text-end" title="Strength">{{x.strength}}
+                                                                </td>
+                                                                <td class="text-end" title="Completed">{{x.completed}}
+                                                                </td>
+                                                                <td class="text-end" title="Continue">{{x.continue}}
+                                                                </td>
+                                                                <td class="text-end" title="Not Started">
+                                                                    {{x.notstarted}}</td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-secondary"
+                                                    data-bs-dismiss="modal">Close</button>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="text-center" title="Strength"> {{x.vg_count}} </td>
+                            <td class="text-center" title="Completed"> {{x.completed_count}} </td>
+                            <td class="text-center" title="Continue"> {{x.continue_count}} </td>
+                            <td class="text-center" title="NotStarted"> {{x.notstarted_count}} </td>
+                            <td scope="col" class="text-center fs-6">
+                                <i (click)="goto_scheduleresult(x)"
+                                    class="bi bi-search text-primary text-center pointer-class"></i>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <h5 class="text-center text-danger p-2 " *ngIf="closed_schedule_list.length==0 && show_live==1">No Data
+                    Found
+                </h5>
+                <h5 class="text-center text-danger p-2 " *ngIf="live_schedule_list.length==0 && show_live==0">No Data
+                    Found</h5>
+            </div>
+        </div>
+
+        <div class="modal fade" id="vgListModal" tabindex="-1" aria-hidden="true"
+        style="display: none;">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Virtual Groups</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"
+                        aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div style="height: 65vh;overflow-y: auto;">
+                        
+                        <table class="table table-bordered table-sm datatable">
+                            <thead
+                                style="text-align: center;position: sticky;top: 0;text-align: left;">
+                                <tr>
+                                    <th scope="col">S.No</th>
+                                    <th scope="col">Virtual Group Name</th>
+                                    <th scope="col" style="font-weight:100;"
+                                        class="text-center  fw-lighter">
+                                        <i class="bi bi-people text-primary"
+                                            title="Strength" style="font-size:19px;"></i>
+                                    </th>
+                                    <th scope="col" class="text-center fw-lighter">
+                                        <img src="assets/img/exams indication dots/Completed.png"
+                                            alt="" title="Completed" width="20">
+                                    </th>
+                                    <th scope="col" class="text-center fw-lighter">
+                                        <img src="assets/img/exams indication dots/Continue.png"
+                                            alt="" title="Continue" width="20">
+                                    </th>
+                                    <th scope="col" class="text-center fw-lighter">
+                                        <img src="assets/img/exams indication dots/NotStarted.png"
+                                            alt="" title="NotStarted" width="20">
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody style="text-align: center;">
+                                <tr *ngFor="let x of selected_vg_info; let i=index">
+                                    <td>{{i+1}}</td>
+                                    <td class="text-start text-primary">
+                                        {{x.virtual_group_name}}</td>
+                                    <td class="text-end" title="Strength">{{x.vg_strength}}
+                                    </td>
+                                    <td class="text-end" title="Completed">{{x.vg_completed}}
+                                    </td>
+                                    <td class="text-end" title="Continue">{{x.vg_continue}}
+                                    </td>
+                                    <td class="text-end" title="Not Strarted">
+                                        {{x.vg_notstarted}}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary"
+                        data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+        </div>
+    </section>
+</main>

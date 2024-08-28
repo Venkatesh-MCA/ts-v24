@@ -1,0 +1,145 @@
+/* @font-face {
+    font-family: ProductSans-Regular;
+    src: url(./fonts/ProductSans-Regular.ttf);
+  }
+
+  @font-face {
+    font-family: OpenSans;
+    src: url(./fonts/OpenSans-Regular.ttf);
+  } */
+
+  body {
+
+    background-image: linear-gradient(90deg, #E5EBFB -31.34%, #C8EBFB 1.93%, #F0FAFF 38.97%, #D4E1FB 76.94%, #D5E0FB 118.4%, #F0F4FC 118.4%) !important;
+    background-repeat: repeat;
+    font-family: ProductSans-Regular !important;
+
+  }
+
+  @page {
+    background-image: linear-gradient(90deg, #E5EBFB -31.34%, #C8EBFB 1.93%, #F0FAFF 38.97%, #D4E1FB 76.94%, #D5E0FB 118.4%, #F0F4FC 118.4%) !important;
+    border: 1px red solid;
+  }
+
+  @media all {
+    .page-break {
+      display: none;
+    }
+
+
+  }
+
+  @media print {
+    body {
+      background-image: linear-gradient(90deg, #E5EBFB -31.34%, #C8EBFB 1.93%, #F0FAFF 38.97%, #D4E1FB 76.94%, #D5E0FB 118.4%, #F0F4FC 118.4%) !important;
+      -webkit-print-color-adjust: exact;
+      background-repeat: repeat;
+
+    }
+
+    .dnone {
+      display: none;
+    }
+
+    .page-break {
+      display: block;
+      page-break-before: always;
+    }
+
+  }
+
+
+
+  input[type=number] {
+    -moz-appearance: textfield;
+  }
+
+  input[type=number]::-webkit-inner-spin-button,
+  input[type=number]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+
+  .inputstyle {
+    width: 32px;
+  }
+
+  ol {
+    counter-reset: list;
+    list-style: none;
+    padding: 5px 0 10px 0px;
+    margin: 0px;
+  }
+
+  ol>li {
+    float: left;
+    padding: 0px 0px 0px 0px;
+  }
+
+  ol>li:before {
+    content: counter(list, decimal) ") ";
+    counter-increment: list;
+    font-weight: bold;
+  }
+
+  table {
+    border-collapse: separate
+  }
+
+  thead {
+    display: table-header-group;
+  }
+
+  tfoot {
+    display: table-footer-group;
+    font-size: 12px;
+    font-weight: bold;
+  }
+
+  table {
+    page-break-inside: auto
+  }
+
+  tr {
+    page-break-inside: avoid;
+    page-break-after: auto
+  }
+
+  .table-pading td,
+  .table-pading th {
+    padding: 4px !important;
+    font-size: 14px;
+  }
+
+  #pageFooter {
+    display: table-footer-group;
+    float: left;
+  }
+
+  #pageFooter:after {
+    counter-increment: page;
+    content: counter(page);
+    padding-left: 180px;
+  }
+
+  h3 {
+    font-size: 18px;
+    text-align: center;
+    text-decoration: underline;
+  }
+
+  #tbl-style {
+    margin: 0px auto;
+    width: 70%;
+  }
+
+  #tbl-style tr {
+
+    margin: 2px 2px;
+  }
+
+  .footer {
+
+    padding: 10px 0;
+    page-break-after: always;
+  }

@@ -1,0 +1,155 @@
+<style>
+    /*
+    .border {
+        width: 100%!important;
+    }
+*/
+    .border td,
+    .border th {
+        border: 1px #ccc solid;
+/*        padding: 2px 5px !important;*/
+        width: 50px !important;
+        text-align: center !important;
+    }
+
+    .border td:first-child,
+    .border th:first-child {
+        text-align: center !important;
+        max-width: 50px !important;
+
+    }
+
+    .border th:nth-child(2) {
+        /*        width: 150px!important;*/
+
+    }
+
+    .border td:nth-child(3) {
+        max-width: 80px !important;
+        text-align: center !important;
+
+
+    }
+ 
+</style>
+<main id="main" class="main">
+    <!-- <div class="pagetitle">
+        <nav>
+            <ol class="breadcrumb m-0 p-0">
+                <li class="breadcrumb-item m-0 p-0"><a href="#management/dashboard">Dashboard</a></li>
+                <li class="breadcrumb-item active m-0 p-0">QR Result</li>
+            </ol>
+        </nav>
+    </div> -->
+    <!-- End Page Title -->
+    <main ng-controller="tsreport" >
+        <div class="card" *ngIf="SETOBJ.length==0">
+            <div class="card-body">
+                <div class="row dashboard">
+        <div  class="noData">
+            No Result Found
+        </div>
+        </div>
+        </div>
+        </div>
+        <div id="example4" role="execelBlock">
+
+
+
+
+            <table cellpadding="0" cellspacing="0" *ngFor="let s of SETOBJ; let i = index" border="1"
+                style="border-color:#ccc;border-collapse: collapse;font-size:10px!important;" class="border">
+                <thead>
+                    <tr style="border-bottom: 1px #ccc solid">
+                        <th rowspan="2"
+                            style="background-color:#d0e2fe;color:#0b2c64;white-space:nowrap;text-align:center;">
+                            S.No
+                        </th>
+                        <th rowspan="2" style="background-color:#d0e2fe;color:#0b2c64;">Branch</th>
+                        <th rowspan="2" style="background-color:#d0e2fe;color:#0b2c64;">Type</th>
+                       
+                        <th style="background-color:#d0e2fe;color:#0b2c64;text-align:left;"
+                            [attr.colspan]="s.BRANCHDATA[0].DATA.length + 1">
+                            <div style="color:#515c72">Subject</div>
+                            <div style="font-size: 20px;">{{s.SUBJECTNAME}}</div>
+                        </th>
+                    </tr>
+                    <tr>
+                        <th style="background-color:#d0e2fe;color:#0b2c64;border:1px #ccc solid;padding:2px 5px;"
+                            *ngFor="let x of s.BRANCHDATA[0].DATA ">
+                            <span>Q{{x.qorder}}</span>
+                        </th>
+                    </tr>
+                </thead>
+                <tbody style="background: #d1e7dd;">
+                    <ng-container *ngFor="let b of s.BRANCHDATA; let j = index">
+                        <tr>
+                            <td style="text-align:centerborder:1px #ccc solid;padding:2px 5px;font-weight: bold;">{{i *
+                                s.BRANCHDATA.length + j + 1}}</td>
+                            <td [ngStyle]="{'border': '1px #a4cfbb solid'}">
+								<div> {{b.BRANCHNAME}} </div>
+                                <div style="font-weight: bold;border: 1px #616a66 solid;width: 24px;margin: 3px auto auto auto;line-height: 12px;">{{b.DATA[0].count}}</div>
+                            </td>
+                            <td *ngIf="j == 0" [attr.rowspan]="s.BRANCHDATA.length"
+                                style="font-weight:600;vertical-align: middle; background-color: #d1e7dd;color: #0c3622;font-size: 20px;border:1px #ccc solid;padding:2px 5px;">
+                                R%
+                            </td>
+                            <td *ngFor="let q of b.DATA " style="border:1px #ccc solid;padding:2px 5px;">
+                                <span [ngStyle]="{'color': undeifned_data(q.right_percentage).CLAS}">
+                                    <div> {{q.right_percentage}} </div>
+									<div [ngStyle]="{'color': undeifned_data(q.right_percentage).CLAS}" style="background:#ECFCFC;color: blue;
+    border-radius: 50%;width:20px;height: 20px;line-height: 20px;margin: auto;font-weight: 600;"> {{q.right}}</div>
+                                </span>
+                            </td>
+                        </tr>
+                    </ng-container>
+                </tbody>
+                <tbody style="background: #f7d7da;">
+                    <ng-container *ngFor="let b of s.BRANCHDATA; let j = index">
+                        <tr>
+                            <td style="text-align:center;border:1px #ccc solid;padding:2px 5px;">{{i *
+                                s.BRANCHDATA.length + j + 1}}</td>
+                            <td [ngStyle]="{'border': '1px #a4cfbb solid'}">
+                                <div>{{b.BRANCHNAME}} </div>
+                                <div style="font-weight: bold;border: 1px #616a66 solid;width: 24px;margin: 3px auto auto auto;line-height: 12px;">{{b.DATA[0].count}}</div>
+                            </td>
+                            <td *ngIf="j == 0" [attr.rowspan]="s.BRANCHDATA.length"
+                                style="font-weight:600;vertical-align: middle;background: #f7d7da;color: #57141d;font-size: 20px;border:1px #ccc solid;padding:2px 5px;">
+                                W%
+                            </td>
+                            <td *ngFor="let q of b.DATA " style="border:1px #ccc solid;padding:2px 5px;">
+                                <span [ngStyle]="{'color': wrong_data(q.wrong_percentage).CLAS}">
+									<div>{{q.wrong_percentage}}</div>
+									<div style="background:#ECFCFC;color: blue;border-radius: 50%;width:20px;height: 20px;line-height: 20px;margin: auto;font-weight: 600;">{{q.wrong}}</div>
+                                </span>
+                            </td>
+                        </tr>
+                    </ng-container>
+                </tbody>
+                <tbody  style="background: #fef3cf;">
+                    <ng-container *ngFor="let b of s.BRANCHDATA; let j = index">
+                        <tr>
+                            <td style="text-align:center;border:1px #ccc solid;padding:2px 5px;">{{i *
+                                s.BRANCHDATA.length + j + 1}}</td>
+                            <td [ngStyle]="{'border': '1px #a4cfbb solid'}">
+                                <div>{{b.BRANCHNAME}}</div>
+                                <div style="font-weight: bold;border: 1px #616a66 solid;width: 24px;margin: 3px auto auto auto;line-height: 12px;">{{b.DATA[0].count}}</div>
+                            </td>
+                            <td *ngIf="j == 0" [attr.rowspan]="s.BRANCHDATA.length"
+                                style="font-weight: 600;vertical-align: middle;background: #fef3cf;color: #57141d;font-size: 20px;border:1px #ccc solid;padding:2px 5px;">
+                                L%
+                            </td>
+                            <td *ngFor="let q of b.DATA " style="border:1px #ccc solid;padding:2px 5px;">
+                                <span [ngStyle]="{'color': left_data(q.left_percentage).CLAS}">
+									<div>{{q.left_percentage}}</div>
+                                    <div style="background:#ECFCFC;color: blue;border-radius: 50%;width:20px;height: 20px;line-height: 20px;margin: auto;font-weight: 600;">{{q.left}}</div>
+                                </span>
+                            </td>
+                        </tr>
+                    </ng-container>
+                </tbody>
+            </table>
+
+        </div>
+    </main>
+</main>

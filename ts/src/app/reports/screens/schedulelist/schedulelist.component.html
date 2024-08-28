@@ -1,0 +1,116 @@
+<main id="main" class="main">
+    <!-- <div class="pagetitle">      
+      <nav>
+        <ol class="breadcrumb mb-0 pb-0">
+          <li class="breadcrumb-item mb-0 pb-0"><a href="#/management/papers" class="mb-0 pb-0">Papers</a></li>
+          <li class="breadcrumb-item active mb-0 pb-0">Schedules</li>
+        </ol>
+      </nav>
+    </div> -->
+    <!-- End Page Title -->
+    <section class="section dashboard">
+      <div class="row">
+        <!-- Left side columns -->
+        <div class="col-12">
+          <div class="row">
+  
+            <!-- Recent Sales -->
+            <div class="col-xxl-12 col-md-12">
+              <div class="card recent-sales overflow-auto">
+  
+                <div class="card-body">
+                  <div class="hstack gap-3">
+                    <h5 class="card-title">Exam Schedules<span>| Today</span></h5>
+                    <form class="search-form d-flex align-items-center gap-3 ms-auto">
+                      <!-- <input style="border-radius: 0;" type="text" class="form-control roundedfa-rotate-0" placeholder="Search Item" minlength="2" aria-describedby="basic-addon2" name="searchText" [(ngModel)]="searchText" (keyup)="searchdatafilter(searchText)" required> -->
+                      <!-- <span class="input-group-text rounded-0" id="basic-addon2"><i class="bi bi-search"></i></span> -->
+                      <!-- <select id="campusname" class="form-select" name="campusname" [(ngModel)]="campusname"
+                        (change)="selectcampus(campusname)">
+                        <option value="All" selected="selected">All</option>
+                        <option *ngFor="let c of branchlistData">{{c._id}}</option>
+                      </select> -->
+                      <!-- {{selectedCampus}}--{{campusname}} -->
+                      <input type="text" id="text" class="form-control flex-grow-1" name="filtertext"
+                        [(ngModel)]="searchText" (keyup)="searchdatafilter(searchText)" title="Enter search keyword"
+                        placeholder="Search here....!" />
+                    </form>
+                  </div>
+                  <table class="table table-borderless datatable">
+                    <thead>
+                      <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">Papercode</th>
+                        <th scope="col">Schedule</th>
+                        <th scope="col" class="text-center">Campus</th>                        
+                        <th scope="col" class="text-start">Actions</th>
+                      </tr>
+                    </thead>
+                    <tbody *ngFor="let x of schedules | filter:filtertext; let i=index">
+                      <tr>
+                        <th scope="row"><a href="#">{{i+1}}</a></th>
+                        <td>{{x.papercode}}</td>
+                        <td>
+                          <div>{{x.examName}}</div>
+                          <div class="text-primary opacity-75 hstack gap-3">
+                            <span>{{x.examStartDateTime | date:'yyyy-MM-dd hh:mm:ss a' }}</span>
+                            <span class="fw-bold text-dark">==></span>
+                            <span>{{x.examEndDateTime | date:'yyyy-MM-dd hh:mm:ss a' }}</span>
+                          </div>
+                          <div class="text-default gap-3" *ngFor="let y of x.groups
+
+                          ">
+                            <span><i class="ri-group-fill">
+                            </i> {{y.groupID}} - {{y.groupName}}</span>
+                            
+                          </div>
+                        </td>
+                        <td class="text-center">{{x.Branch}}</td>
+                  
+                          <td scope="col" class="text-start">
+                            <span class="alert alert-primary py-0 rounded-1 px-2 border-0" style="background-color: transparent;">
+                              <a href="#/reports/schedule/{{x.papercode}}/{{x._id}}" style="color: inherit;"><i class="bi bi-pencil-square"></i></a></span>&nbsp;
+                              <span class="alert alert-warning py-0 rounded-1 border-0 text-danger px-2" style="background-color: transparent;">
+                                <a   style="color: inherit;"><i class="bi bi-trash3"  data-bs-toggle="modal" data-bs-target="#staticBackdrop"></i></a></span>&nbsp;
+                              </td>
+                        <!-- <td scope="col" class="text-start">
+                          <span class="alert alert-primary py-0 rounded-1 px-2" style="background-color: transparent;">
+                            <a href="#/management/result/{{x.papercode}}" style="color: inherit;">Result</a></span>&nbsp;
+                          <span class="alert alert-warning py-0 rounded-1 px-2" style="background-color: transparent;"><a
+                              href="#/management/qr/{{x.papercode}}" style="color: inherit;">QR</a></span>&nbsp;
+                          <span class="alert alert-danger py-0 rounded-1 px-2" style="background-color: transparent;"><a
+                              href="#/management/strength/{{x.papercode}}" style="color: inherit;">Strength</a></span>
+                        </td> -->
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+                
+                 
+              </div>
+            </div><!-- End Recent Sales -->
+          </div>
+        </div><!-- End Left side columns -->
+         
+        <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="staticBackdropLabel">Warning</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              </div>
+              <div class="modal-body">
+               Are you sure you want to delete schedule...!
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-danger">Yes</button>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">No</button>
+                
+              </div>
+            </div>
+          </div>
+        </div>
+
+
+      </div>
+    </section>
+  </main>

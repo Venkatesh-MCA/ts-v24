@@ -1,0 +1,173 @@
+<main id="main" class="main">
+    <main ng-controller="tsreport" class="ng-scope">
+        <div class="card">
+            <div class="px-4">
+                <div class="row dashboard">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <h5 class="card-title d-flex align-items-center gap-3">
+                            <img src="assets/img/hand-rising2.png" width="45" alt="1" />
+                            <section>
+                                <div>Student Attendance Report</div>
+                                <div class="small text-muted fw-normal mt-1">#{{selectpapercode}}</div>
+
+                            </section>
+                        </h5>
+                        <div class="d-flex gap-3" *ngIf="loadingbtn==false">
+                            <aside class="hstack gap-1 align-items-center generate" *ngIf="generatebtn==true">
+                                <img (click)="generatereport()" src="assets/img/generate-0.svg" width="29" alt="1" />
+                                <small class="small" (click)="generatereport()">Generate Attendance</small>
+                            </aside>
+                            <aside class="hstack gap-1 align-items-center generate" *ngIf="regeneratebtn==true">
+                                <img (click)="generatereport()" src="assets/img/generate.svg" width="30" alt="1" />
+                                <small class="small" (click)="generatereport()"> Re Generate Attendance</small>
+                            </aside>
+                        </div>
+                        <div *ngIf="absentsdiv==true">
+                            <button class="left-icon p-0 hvr-grow" (click)="absentsdiv=false">
+                                <svg width="36" height="36" viewBox="0 0 36 36" fill="none"
+                                    xmlns="http://www.w3.org/2000/svg">
+                                    <rect x="0.5" y="0.5" width="35" height="35" rx="9.5" fill="var(--global-bg)"
+                                        stroke="var(--global-border)"></rect>
+                                    <path
+                                        d="M17.29 18.0002L20.83 14.4602C21.0163 14.2728 21.1208 14.0194 21.1208 13.7552C21.1208 13.491 21.0163 13.2376 20.83 13.0502C20.737 12.9565 20.6264 12.8821 20.5046 12.8313C20.3827 12.7805 20.252 12.7544 20.12 12.7544C19.988 12.7544 19.8573 12.7805 19.7354 12.8313C19.6136 12.8821 19.503 12.9565 19.41 13.0502L15.17 17.2902C15.0763 17.3832 15.0019 17.4938 14.9511 17.6156C14.9003 17.7375 14.8742 17.8682 14.8742 18.0002C14.8742 18.1322 14.9003 18.2629 14.9511 18.3848C15.0019 18.5066 15.0763 18.6172 15.17 18.7102L19.41 23.0002C19.5034 23.0929 19.6143 23.1662 19.7361 23.216C19.8579 23.2657 19.9884 23.291 20.12 23.2902C20.2516 23.291 20.3821 23.2657 20.5039 23.216C20.6257 23.1662 20.7366 23.0929 20.83 23.0002C21.0163 22.8128 21.1208 22.5594 21.1208 22.2952C21.1208 22.031 21.0163 21.7776 20.83 21.5902L17.29 18.0002Z"
+                                        fill="#1589EE"></path>
+                                </svg>
+
+                            </button>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-body">
+                <div class="d-flex justify-content-center align-items-center w-100" style="height: 70vh;"
+                    *ngIf="loadingbtn==true">
+                    <button class="spinner-border text-primary" role="status">
+                        <span class="visually-hidden" style="text-align:center">Generate report please wait...</span>
+                    </button>
+                </div>
+                <div *ngIf="absentsdiv==false && loadingbtn!=true" class="table-responsive">
+
+
+
+                    <div class="row mt-3 mx-0 mb-3">
+                        <div class="col-md-3 offset-md-9">
+                            <input type="text" class="form-control" placeholder="Search" aria-describedby="basic-addon2"
+                                name="searchText" [(ngModel)]="searchText" (keyup)="searchdatafilter(searchText)"
+                                required>
+                        </div>
+                    </div>
+                    <table class="table w-100 table-striped-columns-cstm" *ngIf="strengthsdiv==true">
+                        <thead>
+                            <tr class="bg-blue">
+                                <th class="text-center" style="width:50px">S.No</th>
+                                <th class="text-left" style="width:100px">BRANCH</th>
+                                <th class="text-right" style="width:150px">STRENGTH</th>
+
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let x of strengthsdata | filter:filtertext;; let i=index">
+                                <td class="text-center">{{i+1}}</td>
+                                <td class="text-left " style="width:100px">{{x.branch}}</td>
+                                <td class="text-right " style="width:150px">{{x.distinct_students_count}}</td>
+
+
+                            </tr>
+                            <tr>
+                                <th class="text-center">#</th>
+                                <th class="text-left">Total</th>
+                                <th class="text-right">{{getSumElements(strengthsdata,'distinct_students_count')}}</th>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <table class="table w-100 table-striped-columns-cstm" *ngIf="strengthsdiv!=true">
+
+                        <thead>
+                            <tr class="bg-blue">
+                                <th class="text-center">S.No</th>
+                                <th class="text-left">BRANCH</th>
+                                <th class="text-center">STRENGTH</th>
+                                <th class="text-center">SUBMITTED</th>
+                                <th class="text-center">ABSENT</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngIf="msg!=''" class="text-left">
+                                <td colspan="6" class="text-danger">{{msg}}</td>
+                            </tr>
+                            <tr *ngFor="let x of strengthObj | filter:filtertext;; let i=index">
+                                <td class="text-center">{{i+1}}</td>
+                                <td class="text-left">{{x.stu_branch}}</td>
+                                <td class="text-center"><a href="javascript:void(0)" style="text-align: right;" class=""
+                                        (click)=noofstudents(selectpapercode,x.stu_branch)>{{x.stu_strength}}</a></td>
+                                <td class="text-center"><a href="javascript:void(0)" style="text-align: right;" class=""
+                                        (click)=branchsubmit(selectpapercode,x.stu_branch)>{{x.attempts}}</a></td>
+                                <td class="text-center"><a href="javascript:void(0)" style="text-align: right;" class=""
+                                        (click)=showAbsentStudents(selectpapercode,x.stu_branch)>{{x.absents}}</a></td>
+                            </tr>
+                            <tr class="ng-scope" *ngIf="strengthObj.length!=0">
+                                <th class="text-center"></th>
+                                <th class="text-left">Total</th>
+                                <th class="text-center"><a href="javascript:void(0)" style="text-align: right;" class=""
+                                        (click)=noofstudents(selectpapercode,ts)>{{Total_strength}}</a></th>
+                                <th class="text-center"><a href="javascript:void(0)" style="text-align: right;" class=""
+                                        (click)=noofstudents(selectpapercode,submittedstr)>{{Total_present}}</a></th>
+
+                                <th class="text-center"><a href="javascript:void(0)" style="text-align: right;" class=""
+                                        (click)=showAbsentStudents(selectpapercode,all)>{{Total_absents}}</a></th>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div *ngIf="absentsdiv==true">
+                   
+                    <section>
+                        <div>{{title}} Student List</div>                         
+
+                    </section>
+                    <div class="row mb-3">
+                        <div class="col-md-3 offset-md-9">
+                            <input type="text" class="form-control" placeholder="Search" aria-describedby="basic-addon2"
+                                name="searchText" [(ngModel)]="searchText" (keyup)="searchdatafilter(searchText)"
+                                required>
+                        </div>
+                    </div>
+
+
+
+
+                    <table class="table w-100 table-striped-columns-cstm" id="strength">
+                        <thead>
+
+
+                            <tr class="bg-blue">
+                                <th>#</th>
+                                <th>Suc</th>
+                                <th>Name</th>
+                                <th>Papercode</th>
+                                <th>Branch</th>
+                                <th>Section</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let x of absentslist | filter:filtertext; let i=index">
+                                <td>{{i+1}}</td>
+                                <td>{{x.suc}}</td>
+                                <td>{{x.studentname}}</td>
+                                <td>{{x.papecode}}</td>
+                                <td>{{x.campus}}</td>
+                                <td>{{x.section}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+    </main>
+</main>

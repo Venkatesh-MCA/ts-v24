@@ -1,0 +1,58 @@
+.cstm-table .table thead {
+    background: #f6f6fe;
+}
+
+.timebar {
+    background: #eceefd;
+    padding-left: 7px;
+    display: inline-flex;
+    padding-right: 7px;
+    font-size: 11px;
+    height: 27px;
+    align-items: center;
+    justify-content: center;
+    border-radius: 2px;
+    line-height: 16px;
+}
+
+.timebar-cal {
+    width: 20px;
+    margin-right: -10px;
+}
+.vtop td, .vtop th {
+    vertical-align:top!important;
+}
+.rightDiv {
+    position:absolute;
+    right:-20px;width:150px;
+}
+.MoreLink {
+    cursor: pointer;
+    opacity: 0.8;
+}
+.MoreLink:hover {
+    color: #0d6efd!important;
+    font-size: 12px;
+    opacity: 1;
+    
+}
+.text-primary-emphasis {
+    color: #052c65!important;
+}
+.border-primary-subtle {
+    border-color: #9ec5fe !important;
+}
+.fw-semibold {
+    font-weight: 600 !important;
+}
+.pointer-class{
+    cursor: pointer;
+}
+.vidoesIconsMainBlock a {
+    border: 1px #ccc solid;
+    padding: 3px 8px 3px 8px;
+    border-radius: 4px;
+    box-shadow: 0px 2px 5px rgba(50, 50, 105, 0.15), 0px 1px 1px rgba(0, 0, 0, 0.05);
+    text-align: end !important;
+    font-size: 12px;
+}

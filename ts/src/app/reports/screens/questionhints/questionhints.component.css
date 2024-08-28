@@ -1,0 +1,57 @@
+@page {
+    size: 210mm 297mm;  
+   
+   margin: 15mm 5mm 15mm 5mm; 
+   padding: 10mm;
+ } 
+  body, table {
+                 font-family: verdana;
+                 font-size: 16px!important;
+             }
+ @media all {
+  .page-break  { display: none; }
+ }
+ 
+ @media print {
+  .page-break  { display: block; page-break-before: always;}
+ }
+ input[type=number] {-moz-appearance: textfield;}
+ input[type=number]::-webkit-inner-spin-button, 
+ input[type=number]::-webkit-outer-spin-button { 
+   -webkit-appearance: none; 
+   margin: 0; 
+ }
+ .inputstyle{
+     width:32px;
+     }
+ ol {
+   counter-reset: list;
+   padding:0;
+   margin:0px;
+ }
+ ol > li{
+   list-style: none;
+   float:left;
+   padding:0px 10px 10px 0px;
+ }
+ ol > li:before {
+   content: counter(list, decimal) ") ";
+   counter-increment: list;
+   font-weight:bold;
+ }
+ thead {display: table-header-group;}
+ tfoot   {display: table-footer-group; font-size:12px; font-weight:bold;   }
+  table { page-break-inside:auto }
+     tr    { page-break-inside:avoid; page-break-after:auto }
+ 
+ #pageFooter {
+     display: table-footer-group;float:left;
+ }
+ 
+ #pageFooter:after {
+     counter-increment: page;
+     content: counter(page);
+     padding-left:180px;
+ }
+ h3 {font-size:18px; text-align:center; text-decoration:underline;}
+ 

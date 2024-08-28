@@ -1,0 +1,52 @@
+<div class="container-fluid">
+ 
+    <div class="card mt-4 mb-4">
+     <div class="card-header">
+        <img src="assets/headerimages/JUNIOR-HEAD.jpeg" style="width:100%;margin-bottom:10px;display: block;"/>
+      <h4 class="float-right mt-3 text-primary"> Abhyas Videos List <br/>
+      {{selectpapercode}} -{{selectedsubject}}
+      </h4>
+   
+     </div>
+      
+       
+   <table class="table table-hover">
+   <thead>
+     <tr>
+       <th>#</th>    
+       <th>QId</th>
+       <th>Topic</th>
+       <!-- <th>Status</th>	 -->
+       <th>Link</th>	
+     <tr>
+     </thead>
+     <tbody>
+       <tr *ngFor="let x of qdata" >
+       <td >{{x.Questionorder}}</td>
+       <td>{{x.question_master_id}}</td>
+       <td>{{x.topic_master_name}}</td>
+       <td *ngIf="x.url">
+       <a href="{{x.url[0].url}}" target="_blank"><i class="bi bi-play"></i></a> 
+       <!-- <img src="./assets/processing.gif" height="30px;" width="30px;" ng-show="x.processstatus=='Inprocess'"/> -->
+       </td>
+       <td>&nbsp;
+        </td>
+       <!-- <td>
+       <a href="{{x.outputfiename}}">{{x.outputfiename}}</a>
+       </td> -->
+       </tr>
+      </tbody>
+   </table>
+   
+    
+   
+    
+   
+     
+   </div>
+    
+     
+     
+   
+   
+     </div>

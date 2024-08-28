@@ -1,0 +1,76 @@
+<div style="font-size:16px">
+    <link href="https://touchstone.aditya.ac.in/junior/v23/master/sticky.css" rel="stylesheet" type="text/css">
+    <div *ngFor="let x of qdata; let i=index" style="padding:10px;">
+        <img src="assets/headerimages/pptheader.jpg" style="width:100%;margin-bottom:10px" />
+        <div>
+            <table style="width:100%">
+                <thead>
+                    <tr> </tr>
+                    <tr>
+                        <td colspan="2">
+                            <hr style="margin:0px 0" />
+                        </td>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td colspan="2">
+                            <p ng-bind="x.question_master_id"
+                                style="opacity: 0.5; font-size:15px;color: white;width:100%; display:block; text-align:right; margin-top:-100px; padding-right:5px;">
+                            </p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><span [appMathJax]="x.question_master_desc"
+                                style="margin:0px; margin-bottom:1px; text-align:justify; display:block; padding-right:80px;">{{x.question_master_desc}}</span>
+                            <div [hidden]="x.question_master_type == 4 || x.question_master_type == 12"
+                                style="padding-top:32px;padding-bottom: 7px;color:#f87c02;">Options</div>
+                            <section style="display: flex;justify-content: space-between;flex-direction:column">
+
+                                <aside style="flex-flow: 1">
+                                    <ol type="1" [hidden]="x.question_master_type == 4 || x.question_master_type == 12">
+                                        <li *ngFor="let y of x.ans"
+                                            style="padding-right:30px; margin-bottom:5px; float:left; min-width:120px; padding-bottom:2px;content: counter(list, decimal) ">
+                                            <span [appMathJax]="y.answer_master_desc">{{y.answer_master_desc}}</span>
+                                            <!-- <i ng-show="y.answer_master_isright == '1'"
+                                                class="fa fa-check text-success fa-lg"></i> -->
+                                                <img *ngIf="y.answer_master_isright == '1'" src="assets/img/check-lg.svg" style="width: 30px; ">
+                                        </li>
+                                        <div style="clear:both"></div>
+                                    </ol>
+                                </aside>
+                                <aside class="note-wrap"
+                                    style="position: relative;font-family:Kalam !important;width:100%;min-height:10px;padding: 20px;position: relative;vertical-align: top;display: inline-block;color: #4b453c;background-color:#fff!important;line-height: 34px;box-shadow: 0 4px 5px rgba(0, 0, 0, 0.2);margin-right: 50px;border:1px #ccc solid;margin-top: 30px;">
+                                    <img src="https://touchstone.aditya.ac.in/junior/v23/master/pin.png"
+                                        style="position: absolute;top: -13px;left: 10px;filter: hue-rotate(208deg);width:50px">
+                                    <div
+                                        style="display:flex;color:red!important;font-weight: 600;margin-top:-14px;padding-left:38px;font-size:24px;justify-content: space-between">
+                                        <div> Hints & Solutions</div>
+                                        <div style="color: #333;font-size: 12px">{{x.question_master_id}}</div>
+                                    </div>
+                                    <span style="color:#0000FF!important;font-family:kalam!important;"
+                                        class="handwriting" ng-bind-html="str_replace(x.question_master_hint) | trust"
+                                        data-ng-init="UpdateMathJax()"
+                                        [appMathJax]="x.question_master_hint">{{x.question_master_hint}}</span>
+                                </aside>
+                            </section>
+                        </td>
+                    </tr>
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <td colspan="3">
+                            <hr style="margin:0px 0" />
+                        </td>
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
+        <div class="footer" *ngIf="(i%2)!=0"> &nbsp; </div>
+        <!-- <div class="footer"> &nbsp; </div> -->
+        <!-- <div class="page-break"></div> -->
+
+
+        <div style="clear:both"></div>
+    </div>
+</div>
